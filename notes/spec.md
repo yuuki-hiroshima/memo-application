@@ -101,14 +101,14 @@
     → 空でないなら配列中のmax + 1のidを作る
 3．bodyが空かは、app.pyでチェック（ここではvalueがある前提）
 4．titleが空の場合はbodyの先頭10文字をtitleとする
-5．現在時刻をcreated_atにセットする
-6．categoryが未指定なら"メインフォルダ"を割り当てる
-    → もしくは選択式で操作なしならメインフォルダが指定されるようにしておく
-7．is_privateはFalse（あとからプライベートフォルダとして機能させる予定）
+5．現在時刻をcreated_at / update_atに同じ値をセット(.isoformatを使用)
+6．categoryが未指定(None or 空文字)なら"メインフォルダ"を割り当てる
+    → if not categoryで対応
+7．is_privateはFalse（あとからプライベートフォルダとして機能させる予定 / 今はapp.py側から必ずFalseが来る設定）
 8．上記の項目をまとめて「1つの新しいメモ」を作成（辞書データ）
 9．メモ一覧の最後に追加
 10．json_io.save_memos()で保存
-11．成功 or 失敗の結果を返す
+11．成功 or 失敗の結果(new_memo or None)を返す
 
 
 "list_memos(json_path, category, sort_key)"
@@ -131,12 +131,16 @@
 
 擬似コード
 1．json_io.load_memos()で一覧を取得
-2．idに一致するメモを探す
-3．見つからなければ「見つかりません」と表示する
-4．見つかったメモに対し、title / body / category の指定がある箇所を上書き
-5．update_atを現在の時刻で上書き
-6．json_io.save_memos()で保存
-7．成功 or 失敗の結果を返す
+2．forループで入力されたidに一致するメモを探す
+    → なければ False を返す
+3．見つかったメモに対し、
+    title が None でなければ上書き
+    body が None でなければ上書き
+    category が None でなければ上書き
+4．現在の時刻を取得し、updated_atを上書き（.isoformat()）
+5．更新済みのメモでmemos[index]を入れ替える
+5．json_io.save_memos()で保存
+6．成功 or 失敗の結果（memos or False）を返す
 
 
 "delete_memo(json_path, id)"
@@ -146,11 +150,11 @@
 
 擬似コード
 1．json_io.load_memosを呼び出す
-2．idが一致するメモを探す
-3．見つからなければ「対象のメモはありません」などのメッセージを表示
-4．見つかったメモをリストから取り除く
+2．入力されたidと一致するメモを探す
+3．見つからなければ、Falseを返す
+4．pop(index)で対象のメモを削除
 5．json_io.save_memos()で保存
-6．成功 or 失敗の結果を返す
+6．成功 or 失敗の結果（memo or False）を返す
 
 
 【json_io.py】
