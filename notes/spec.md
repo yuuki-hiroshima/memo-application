@@ -16,13 +16,16 @@
 ・戻り値（作成されたメモや成功フラグ）を見てから結果を表示
 
 擬似コード
-1．argparseでaddサブコマンドを定義
-2．--title / --body / --category / --private をオプションで受け取る
-3．bodyが空ならエラーメッセージを表示し終了
-4．categoryが未指定なら"メインフォルダ"をセット
-5．memo_core.create_memo()を呼び出す
-6．成功した結果を見て「メモを追加しました」などのメッセージを表示（idは載せない予定）
-    → 失敗の場合はエラーメッセージを表示
+1．argparseのメイン parser を作る
+2．サブコマンドを管理する subparsers を作る
+3．add のサブコマンドを作る
+    → addサブコマンドが選ばれた場合、呼び出される処理関数をセットしておく
+4．--title(任意) / --body(必須) / --category(任意) / --private(store_trueでフラグ) をオプションで受け取る
+5．bodyが None or 空文字 なら「本文は必須です」と表示し終了
+6．categoryが None or 空文字 なら"メインフォルダ"をセット
+7．result = create_memo()を呼び出す
+8．result が None でなければ「メモを追加しました」のメッセージを表示（idは載せない予定）
+    → None の場合は「メモを追加できませんでした」を表示
 
 
 "list"
@@ -34,11 +37,13 @@
 ・ソート順を指定できるようにする（余裕があれば）
 
 擬似コード
-1．argparseでlistサブコマンドを定義
-2．--category / --sort をオプションで受け取る
-3．指定がなければcategoryは「すべてのメモ」、sortは「updated」
-4．memo_core.list_memos()を呼び出す
-5．戻ってきたメモ一覧を タイトル / カテゴリ / 作成日 / 更新日 のような形式で表示
+1．list のサブコマンドを作る
+2．args.category(任意)を受け取る
+3．if not args.category / elif args.category = "all" なら「すべてのメモ」を表示
+4．args.sort(任意) を受け取る
+5．sortが　None or 空文字　なら sort = updated(更新日の新しい順) で表示
+6．list_memos(MEMOS_PATH, category, sort_key)を呼び出す
+7．戻ってきたメモ一覧を タイトル / カテゴリ / 作成日 / 更新日 のような形式で表示（f"{memo['title']} | {memo['category']} | … "）
     → メモが0件なら「メモがありません」などのメッセージを表示
 
 
@@ -50,9 +55,10 @@
 ・更新の結果を表示する
 
 擬似コード
-1．argparseでupdateサブコマンドを定義
+1．update のサブコマンドを作成
 2．--id(必須)と、--title / --body / --category(任意)を受け取る
-3．idが指定されていなければ、エラーメッセージを表示して終了
+3．idが指定されていなければ、「idを指定してください」と表示して終了
+    → idが見つからなければ、「指定したidはありません」と表示して終了
 4．title / body / category のいずれも指定がない場合もエラー終了
 5．memo_core.update_memo()を呼び出す
 6．成功なら「メモを更新しました」と表示

@@ -45,11 +45,32 @@ def create_memo(filepath, title, body, category, is_private):
         return
     
 
-def list_memos(filepath):
+def list_memos(filepath, category, sort):
     memos = load_memos(filepath)
     if not memos:
         return []
-    return memos
+    
+    if not category:
+        target = memos
+    else:
+        target = [memo for memo in memos if memo["category"] == category]
+
+    if sort == "asc":
+        sorted_target = sorted(
+                target,
+                key=lambda memo: memo["updated_at"],
+                reverse=False
+            )
+        return sorted_target
+    elif sort == "desc":
+        sorted_target = sorted(
+                target,
+                key=lambda memo: memo["updated_at"],
+                reverse=True
+            )
+        return sorted_target
+    else:
+        return target
 
 
 def update_memo(filepath, id, title, body, category):
@@ -58,7 +79,6 @@ def update_memo(filepath, id, title, body, category):
         for memo in memos:
             if memo["id"] == id:
                 target_memo = memo
-                print(target_memo)
             else:
                 continue
             
@@ -75,9 +95,9 @@ def update_memo(filepath, id, title, body, category):
             target_memo["updated_at"] = now
             
             save_memos(filepath, memos)
-            return memos
+            return target_memo
         
-        return False
+        return
         
     except (TypeError, ValueError):
         print("無効な文字が含まれています。")

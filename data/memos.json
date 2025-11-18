@@ -1,21 +1,21 @@
 [
   {
     "id": 1,
-    "title": "お仕事",
-    "body": "仕事を探しています",
-    "category": "生活",
+    "title": "新しいデータ",
+    "body": "編集機能チェックをしている",
+    "category": "データ関連",
     "is_private": false,
     "created_at": "2025-11-17T14:51:57.468644",
-    "updated_at": "2025-11-17T14:51:57.468644"
+    "updated_at": "2025-11-18T22:56:04.037439"
   },
   {
     "id": 2,
-    "title": "買い物メモ",
-    "body": "卵と牛乳を買う",
-    "category": "生活",
+    "title": "新しい買い物",
+    "body": "ココアとミルクを買う",
+    "category": "食品類",
     "is_private": false,
     "created_at": "2025-11-17T14:52:39.661333",
-    "updated_at": "2025-11-17T14:52:39.661333"
+    "updated_at": "2025-11-18T22:38:00.311326"
   },
   {
     "id": 3,
@@ -43,5 +43,23 @@
     "is_private": false,
     "created_at": "2025-11-17T14:56:30.764519",
     "updated_at": "2025-11-17T14:56:30.764519"
+  },
+  {
+    "id": 6,
+    "title": "CLIテスト",
+    "body": "CLI本文テスト",
+    "category": "テスト",
+    "is_private": false,
+    "created_at": "2025-11-18T16:34:23.968594",
+    "updated_at": "2025-11-18T16:34:23.968594"
+  },
+  {
+    "id": 7,
+    "title": "CLIテスト2",
+    "body": "CLI本文テスト2",
+    "category": "テスト2",
+    "is_private": true,
+    "created_at": "2025-11-18T16:35:09.749980",
+    "updated_at": "2025-11-18T16:35:09.749980"
   }
 ]
