@@ -1,7 +1,7 @@
 # argparse
 
 from memo_core import create_memo, list_memos, update_memo, delete_memo
-from json_io import MEMOS_PATH
+from json_io import MEMOS_PATH, load_memos
 import argparse
 import datetime
 
@@ -35,8 +35,15 @@ def parse_args():
     parse_update.add_argument("--category", help="カテゴリーを入力")
     parse_update.set_defaults(func=handle_update)
 
+    # delete
+    parse_delete = subparsers.add_parser("delete", help="メモを削除")
+    parse_delete.add_argument("--id", help="idを入力")
+    parse_delete.add_argument("--force", action="store_true", help="削除の確認をスキップ")
+    parse_delete.set_defaults(func=handle_delete)
+
     return parser.parse_args()
 
+# 新規作成
 def handle_add(args):
     print(args)
     if not args.body:
@@ -52,6 +59,7 @@ def handle_add(args):
     else:
         print("メモを追加できませんでした。")
 
+# 一覧表示
 def handle_list(args):
     category = args.category
     sort = args.sort
@@ -76,10 +84,11 @@ def handle_list(args):
 
             print(f"{memo['id']} | {memo['title']} | {memo['body'][:10]} | {memo['category']} | {format_datetime}")
 
+# 編集
 def handle_update(args):
     try:
         if not args.id:
-            print("idを入力してください。listで確認できます。")
+            print("IDを入力してください。listで確認できます。")
             return
         else:
             int_id = int(args.id)
@@ -114,7 +123,61 @@ def handle_update(args):
 
             print(f"{update_result['id']} | {update_result['title']} | {update_result['body'][:10]} | {update_result['category']} | {format_datetime}")
 
+# 削除
+def handle_delete(args):
+    try:
+        if not args.id:
+            print("IDを入力してください。listで確認できます。")
+            return
+        else:
+            int_id = int(args.id)
 
+    except (TypeError, ValueError):
+        print("数字を入力してください。listで確認できます。")
+        return
+    
+    if args.force:
+        delete = delete_memo(MEMOS_PATH, int_id)
+        if delete is None:
+            print("IDに該当するメモはありません。listで確認できます。")
+        elif delete == False:
+            return
+        else:
+            print(f"{delete['id']} | {delete['title']} | {delete['body'][:10]}を削除しました。")
+    else:
+        memos = load_memos(MEMOS_PATH)
+        
+        check_memo = None
+        for memo in memos:
+            if memo["id"] == int_id:
+                check_memo = memo
+                break
+            else:
+                continue
+        
+        if check_memo is None:
+            print("IDに該当するメモはありません。listで確認できます。")
+            return
+
+        choice_yn = input(f"ID: {check_memo['id']} | {check_memo['title']} | {check_memo['body'][:10]} を削除しますか？（y/n）:")
+        choice = choice_yn.strip().lower()
+
+        if choice == "y":
+            delete = delete_memo(MEMOS_PATH, int_id)
+            if delete is None:
+                print("IDに該当するメモはありません。listで確認できます。")
+            elif delete == False:
+                return
+            else:
+                print(f"{delete['id']} | {delete['title']} | {delete['body'][:10]}を削除しました。")
+        elif choice == "n":
+            print("削除の操作を取りやめます。")
+            return
+        else:
+            print("y/nのいずれかを入力してください。")
+            return    
+
+# 実行
 def main():
     args = parse_args()
     if hasattr(args, "func"):

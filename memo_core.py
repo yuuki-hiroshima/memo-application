@@ -108,24 +108,26 @@ def update_memo(filepath, id, title, body, category):
     
 
 def delete_memo(filepath, id):
-    print("プログラムを実行します。")
+    print("削除プログラムを実行します。")
     try:
         found_index = None
+        found_memo = None
         memos = load_memos(filepath)
         for index, memo in enumerate(memos):
             if memo["id"] == id:
                 found_index = index
+                found_memo = memo
                 break
             else:
                 continue
 
         if found_index is None:
             print("削除する番号がありません。")
-            return False
+            return
 
         memos.pop(found_index)
         save_memos(filepath, memos)
-        return memo
+        return found_memo
     
     except Exception as e:
         print(f"メモを削除中にエラーが発生しました: {e}")
