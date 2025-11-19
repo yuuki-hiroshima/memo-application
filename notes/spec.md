@@ -6,6 +6,23 @@
 "add"
 
 "list"
+web_app.py
+
+1． Flask, render_template をインポートする
+2．memo_core から list_memos をインポートする
+3．json_io から MEMOS_PATH をインポートする（CLI 版と同じ JSON を使う）
+4．app = Flask(...) を定義する
+5．「/memos」に対応する関数を定義する
+   → デコレータで URL を指定（GET だけでOK）
+   → 関数名は例：show_memo_list()
+
+   関数の中の処理：
+   a. category = None（まずは絞り込みなし）
+   b. sort = None（並び替えもしない／あとで対応）
+   c. memos = list_memos(MEMOS_PATH, category, sort)
+   d. return render_template("list.html", memos=memos)
+
+6．スクリプトとして直接実行されたときだけ app.run(...) するブロックを書く
 
 "update"
 
