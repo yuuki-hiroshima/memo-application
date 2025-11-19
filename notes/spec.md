@@ -1,4 +1,17 @@
-【app.py】
+【web_app.py】
+
+必要なライブラリ
+・Flask
+
+"add"
+
+"list"
+
+"update"
+
+"delete"
+
+【cli_app.py】
 
 必要なライブラリ
 ・datetime
