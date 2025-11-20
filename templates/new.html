@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新規作成</title>
+</head>
+<body>
+  <h1>新規作成</h1>
+
+  {% if error_message %}
+    <p style="color: red;">
+      {{ error_message }}
+    </p>
+  {% endif %}
+
+  <form action="/memos/new" method="POST">
+    <label>タイトル<br><input name="title" type="text"></label>
+    <br>
+    <label>本文<br><textarea name="body" id="body" rows="6" cols="40" placeholder="本文を入力してください"></textarea></label>
+    <br>
+    <label>カテゴリ<br><input name="category" type="text"></label>
+    <br>
+    <input name="is_private" type="checkbox" value="True">プライバシー
+    <br>
+    <button type="submit">登録</button>
+  </form>
+</body>
+</html>

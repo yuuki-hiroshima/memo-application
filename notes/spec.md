@@ -5,9 +5,17 @@
 
 "add"
 
-"list"
-web_app.py
+擬似コード
+1.「"/"」 「"/memos/new"」のルートを与える
+2．methods=["GET"]なら render_template で new.html を返す（空のフォーム）
+3．methods=["POST"]なら request.form から要素を取得
+    → body が空ならエラー（HTML側で表示）
+4．create_memo(MEMOS_PATH, title, body, category, is_private)を実行
+5．保存に成功したら、redirect で /memos へ
 
+"list"
+
+擬似コード
 1． Flask, render_template をインポートする
 2．memo_core から list_memos をインポートする
 3．json_io から MEMOS_PATH をインポートする（CLI 版と同じ JSON を使う）
@@ -25,6 +33,24 @@ web_app.py
 6．スクリプトとして直接実行されたときだけ app.run(...) するブロックを書く
 
 "update"
+
+擬似コード
+
+GET
+1．ルート関数で memo_id を受け取る
+2．JSONからメモ一覧を読み込む（load_memos or list_memos）
+3．forループで id が一致する1件を探す
+    → 見つからない場合：「見つかりません」と表示し、/memosに戻す
+    → 見つかった場合：target_memo = memo とし、render_template("edit.html", memo=target_memo , memo_id=memo_id)を返す
+
+POST
+1．memo_id をURLから受け取る
+2．memo = request.form で title, body, category, is_private を取得
+3．body が空なら error_message を表示
+4．update_memo(MEMOS_PATH, memo_id, title, body, category)を呼び出す
+5．update_memoの戻り値を見る
+    → 成功なら /memos に redirect
+    → 失敗ならエラーメッセージ付きで edit.html をもう一度表示
 
 "delete"
 
