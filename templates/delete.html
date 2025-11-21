@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>削除確認画面</title>
+</head>
+<body>
+  <h1>本当に削除しますか？</h1>
+
+  <p>ID: {{ memo.id }}</p>
+  <p>タイトル: {{ memo.title }}</p>
+  <p>本文: {{ memo.body }}</p>
+  <p>メモ作成日時: {{ created_at }}</p>
+  <p>最終更新日時: {{ updated_at }}</p>
+ 
+  <form action="/memos/{{ memo.id }}/delete" method="POST">
+    <button type="submit">削除</button>
+  </form>
+  <br>
+  <a href="/memos">一覧に戻る</a>
+</body>
+</html>

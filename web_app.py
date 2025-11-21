@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, redirect, flash
 from memo_core import create_memo, list_memos, update_memo, delete_memo
 from json_io import MEMOS_PATH, load_memos
+import datetime
 
 app = Flask(__name__)
 app.secret_key = "my_secret_key"
@@ -100,6 +101,70 @@ def edit_memo(memo_id):
         else:
             flash("メモの編集・保存に成功しました。")
             return redirect("/memos")
+
+
+# delete
+@app.route("/memos/<int:memo_id>/delete", methods=["GET", "POST"])
+def del_memo(memo_id):
+    if request.method == "GET":
+        target_memo = None
+        memos = load_memos(MEMOS_PATH)
+        for memo in memos:
+            int_id = int(memo["id"])
+            if int_id == memo_id:
+                target_memo = memo
+                break
+            else:
+                continue
+        
+        if target_memo is None:
+            flash("該当のメモはありませんでした。")
+            return redirect("/memos")
+        else:
+            created_at =  time_display_organaize(target_memo["created_at"])
+            if not created_at:
+                created_at = "(記録なし)"
+            updated_at =  time_display_organaize(target_memo["updated_at"])
+            if not updated_at:
+                updated_at = "(記録なし)"
+
+            return render_template(
+                "delete.html",
+                memo=target_memo,
+                memo_id=memo_id,
+                created_at=created_at,
+                updated_at=updated_at
+            )
+    
+    if request.method == "POST":
+        d_memo = delete_memo(MEMOS_PATH, memo_id)
+
+        if d_memo is None:
+            flash("削除対象のメモは存在しません。すでに削除された可能性があります。")
+            return redirect("/memos")
+        elif d_memo is False:
+            flash("メモを削除中にエラーが起きました。")
+            return redirect("/memos")
+        else:
+            flash(f"「{d_memo['title']}」を削除しました。")
+            return redirect("/memos")
+        
+# 時間の表示調整用
+def time_display_organaize(arg_time):
+    if not arg_time:
+        return
+    
+    format_in = "%Y-%m-%dT%H:%M:%S.%f"
+    try:
+        dt_object = datetime.datetime.strptime(arg_time, format_in)
+    except ValueError:
+        format_in_no_micro = "%Y-%m-%dT%H:%M:%S"
+        dt_object = datetime.datetime.strptime(arg_time[:19], format_in_no_micro)
+
+    format_out = "%Y年%m月%d日/%H時%M分"
+    format_datetime = dt_object.strftime(format_out)
+
+    return format_datetime
 
 if __name__ == "__main__":
     app.run(debug=True, port=8000)

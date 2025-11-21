@@ -54,6 +54,23 @@ POST
 
 "delete"
 
+擬似コード
+
+GET
+1．URLから memo_id を受け取る
+2．load_memos で全メモを取得
+3．for で id が一致するメモを探す
+    → 見つからない場合：flash + redirect("/memos")
+    → 見つかった場合：日時を整形 + render_template("delete.html…)
+
+POST
+1．URLから memo_id を受け取る
+2．delete_memo を呼び出す
+3．戻り値を見て分岐
+    → None: idがなかった →　flash + /memos に戻る
+    → False: エラー → flash + /memos に戻る
+    → その他: 正常削除 → flash + /memos に戻る
+
 【cli_app.py】
 
 必要なライブラリ
