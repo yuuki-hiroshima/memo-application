@@ -34,6 +34,8 @@ def new_memo():
             return render_template("new.html", error_message="登録する情報を入力してください。")
         else:
             return redirect("/memos")
+        
+    return render_template("new.html")
 
 # list
 @app.route("/", methods=["GET"]) # トップページはあとから新規作成に移動
