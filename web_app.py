@@ -44,7 +44,20 @@ def show_memo_list():
 
     memos = list_memos(MEMOS_PATH, category, sort)
 
-    return render_template("list.html", memos=memos)
+    new_memos = []
+    for memo in memos:
+        created_at = time_display_organaize(memo["created_at"])
+        if not created_at:
+            created_at = "(記録なし)"
+        memo["created_at"] = created_at
+        updated_at = time_display_organaize(memo["updated_at"])
+        if not updated_at:
+            updated_at = "(記録なし)"
+        memo["updated_at"] = updated_at
+
+        new_memos.append(memo)
+
+    return render_template("list.html", memos=new_memos)
 
 
 # update

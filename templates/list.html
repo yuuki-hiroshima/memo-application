@@ -20,6 +20,10 @@
     {% endif %}
   {% endwith %}
 
+  <form action="/memos/new">
+    <button type="submit">新規作成</button>
+  </form>
+
   <table>
     <thead>
       <tr>
@@ -28,16 +32,22 @@
         <th>本文</th>
         <th>作成日</th>
         <th>更新日</th>
+        <th>操作</th>
       </tr>
     </thead>
     <tbody>
       {% for memo in memos %}
       <tr>
         <td>{{ memo["id"] }}</td>
-        <td>{{ memo["title"] }}</td>
+        <td><a href="/memos/{{ memo.id }}/edit">{{ memo["title"] }}</a></td>
         <td>{{ memo["body"][:10] }}</td>
         <td>{{ memo["created_at"] }}</td>
         <td>{{ memo["updated_at"] }}</td>
+        <td>
+          <a href="/memos/{{ memo.id }}/edit">編集</a>
+          <br>
+          <a href="/memos/{{ memo.id }}/edit">削除</a>
+        </td>
       </tr>
       {% endfor %}
     </tbody>

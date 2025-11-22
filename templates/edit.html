@@ -8,22 +8,52 @@
 <body>
   <h1>編集</h1>
 
+  <p>
+    <a href="/memos">一覧へ戻る</a>
+  </p>
+
+  <p>ID: {{ memo.id }}</p>
+
   {% if error_message %}
-    <p style="color: red;">
+    <p style="color: red; margin-bottom: 16px;">
       {{ error_message }}
     </p>
   {% endif %}
 
   <form action="/memos/{{ memo_id }}/edit" method="POST">
-    <label>タイトル<br><input name="title" type="text" value="{{ memo.title }}"></label>
+
+    <div>
+      <label for="title">タイトル</label><br>
+      <input id="title" name="title" type="text" value="{{ memo.title}}">
+    </div>
+
     <br>
-    <label>本文<br><textarea name="body" id="body" rows="6" cols="40" placeholder="本文を入力してください">{{ memo.body }}</textarea></label>
+
+    <div>
+      <label for="body">本文</label><br>
+      <textarea name="body" id="body" rows="6" cols="40" placeholder="本文を入力してください">{{ memo.body }}</textarea>
+    </div>
+
     <br>
-    <label>カテゴリ<br><input name="category" type="text" value="{{ memo.category }}"></label>
+
+    <div>
+      <label for="category">カテゴリ</label><br>
+      <input id="category" name="category" type="text" value="{{ memo.category }}">
+    </div>
+
     <br>
-    <input name="is_private" type="checkbox" value="True" {% if memo.is_private %}checked{% endif %}>プライバシー
+
+    <div>
+      <label>
+        <input name="is_private" type="checkbox" value="True" {% if memo.is_private %}checked{% endif %}>
+        プライバシー
+      </label>
+    </div>
+
     <br>
-    <button type="submit">登録</button>
+
+    <button type="submit">変更を保存</button>
+
   </form>
 </body>
 </html>
