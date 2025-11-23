@@ -2,11 +2,11 @@
 body {
   margin: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background-color: #f4f4f4;
+  background-color: #e5e5e5;
 }
 
 /* レイアウト全体（左サイドバー + 右コンテンツ） */
-.layout-container {
+.app-layout {
   display: flex;
   min-height: 100vh;
 }
@@ -14,7 +14,7 @@ body {
 /* サイドバー */
 .sidebar {
   width: 260px;
-  background-color: #e0e0e0;
+  background-color: #dedede;
   padding: 20px;
   box-sizing: border-box;
 }
@@ -22,13 +22,26 @@ body {
 /* メインコンテンツ */
 .main {
   flex: 1;
-  padding: 24px;
+  padding: 24px 32px;
   box-sizing: border-box;
+  background-color: #f5f5f5;
+  display: flex;
+  justify-content: center;
+}
+
+/* メインカード領域 */
+.main-inner {
+  width: 100%;
+  max-width: 1080px;
   background-color: #ffffff;
+  padding: 24px 32px;
+  box-sizing: border-box;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)
 }
 
 /* 見出し */
-h1 {
+.main-inner h1 {
   margin-top: 0;
 }
 

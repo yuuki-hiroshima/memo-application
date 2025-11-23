@@ -8,17 +8,19 @@
 </head>
 <body>
 
-  <div class="layout-container" style="display: flex; min-height: 100vh;">
+  <div class="app-layout">
 
-    <aside class="sidebar" style="width: 250px; background: #ddd; padding: 20px;">
+    <aside class="sidebar">
       {% block sidebar %}
       <p>[後でここに検索ボックスとフォルダリストが入る]</p>
       {% endblock %}
     </aside>
 
-    <main class="main" style="flex: 1; padding: 20px;">
-      {% block content %}
-      {% endblock %}
+    <main class="main">
+      <div class="main-inner">
+        {% block content %}
+        {% endblock %}
+      </div>
     </main>
 
   </div>
