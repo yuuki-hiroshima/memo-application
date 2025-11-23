@@ -41,13 +41,20 @@ def new_memo():
 @app.route("/", methods=["GET"]) # トップページはあとから新規作成に移動
 @app.route("/memos", methods=["GET"])
 def show_memo_list():
-    category = None
+    category = request.args.get("category")
     sort = None
 
-    memos = list_memos(MEMOS_PATH, category, sort)
+    if category == "未分類":
+        category_filter = ""
+    else:
+        category_filter = category
 
-    new_memos = []
+    memos = list_memos(MEMOS_PATH, category_filter, sort)
+
+    display_memos = []
     for memo in memos:
+        memo = memo.copy()
+
         created_at = time_display_organaize(memo["created_at"])
         if not created_at:
             created_at = "(記録なし)"
@@ -57,9 +64,29 @@ def show_memo_list():
             updated_at = "(記録なし)"
         memo["updated_at"] = updated_at
 
-        new_memos.append(memo)
+        if not memo["category"]:
+            memo["category"] = "未分類"
 
-    return render_template("list.html", memos=new_memos)
+        display_memos.append(memo)
+
+    # サイドバーのカテゴリ表示用
+    all_memos = load_memos(MEMOS_PATH)
+    category_counts = {}
+    for m in all_memos:
+        cat = m["category"]
+        if not cat:
+            cat = "未分類"
+        category_counts[cat] = category_counts.get(cat, 0) + 1  # 取得したカテゴリをkeyとし、valueに1ずつ追加していく → {"仕事": 1, "おもちゃ": 4, "食事": 2}
+
+    total_count = len(all_memos)
+
+    return render_template(
+        "list.html",
+        memos=display_memos,
+        total_count=total_count,
+        category_counts=category_counts,
+        selected_category=category
+    )
 
 
 # update
@@ -163,6 +190,7 @@ def del_memo(memo_id):
         else:
             flash(f"「{d_memo['title']}」を削除しました。")
             return redirect("/memos")
+
         
 # 時間の表示調整用
 def time_display_organaize(arg_time):

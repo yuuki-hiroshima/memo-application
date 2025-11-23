@@ -19,6 +19,55 @@ body {
   box-sizing: border-box;
 }
 
+/* サイドバー内の検索ボックス */
+.sidebar-search {
+  margin-bottom: 24px;
+}
+
+.sidebar-search input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 16px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* フォルダリスト */
+.folder-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  font-size: 14px;
+}
+
+.folder-list li {
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+.folder-list li:hover {
+  text-decoration: underline;
+}
+
+.folder-list a {
+  text-decoration: none;
+  color: #333;
+}
+
+.folder-list a.is-active {
+  font-weight: bold;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 4px 8px;
+}
+
+/* ヘッダ */
+.folder-header {
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
 /* メインコンテンツ */
 .main {
   flex: 1;

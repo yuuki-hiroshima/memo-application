@@ -50,8 +50,10 @@ def list_memos(filepath, category, sort):
     if not memos:
         return []
     
-    if not category:
+    if category is None:
         target = memos
+    elif category == "":
+        target = [memo for memo in memos if not memo["category"]]
     else:
         target = [memo for memo in memos if memo["category"] == category]
 
