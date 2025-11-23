@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <div class="layout-container" style="display: flex; min-height: 100vh;">
+
+    <aside class="sidebar" style="width: 250px; background: #ddd; padding: 20px;">
+      {% block sidebar %}
+      <p>[後でここに検索ボックスとフォルダリストが入る]</p>
+      {% endblock %}
+    </aside>
+
+    <main class="main" style="flex: 1; padding: 20px;">
+      {% block content %}
+      {% endblock %}
+    </main>
+
+  </div>
+  
+</body>
+</html>

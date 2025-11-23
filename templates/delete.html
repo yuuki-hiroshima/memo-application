@@ -1,36 +1,29 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>削除確認画面</title>
-</head>
-<body>
-  <h1>本当に削除しますか？</h1>
+{% extends "base.html" %}
+{% block title %}削除画面{% endblock %}
+{% block content %}
+<h1>本当に削除しますか？</h1>
 
-  <p>
-    <a href="/memos">一覧へ戻る</a>
-  </p>
+<p>
+  <a href="/memos">一覧へ戻る</a>
+</p>
 
-  <div class="memo-detail">
-    <p>ID: {{ memo.id }}</p>
-    <p>タイトル: {{ memo.title }}</p>
-    <p>本文: {{ memo.body }}</p>
-    <p>メモ作成日時: {{ created_at }}</p>
-    <p>最終更新日時: {{ updated_at }}</p>
-  </div>
+<div class="memo-detail">
+  <p>ID: {{ memo.id }}</p>
+  <p>タイトル: {{ memo.title }}</p>
+  <p>本文: {{ memo.body }}</p>
+  <p>メモ作成日時: {{ created_at }}</p>
+  <p>最終更新日時: {{ updated_at }}</p>
+</div>
 
-  <p style="color: red;">
-    ※ この操作は取り消せません。本当に削除してよろしいですか？
-  </p>
- 
-  <div>
-    <form action="/memos/{{ memo.id }}/delete" method="POST" style="display: inline;">
-      <button type="submit">削除</button>
-    </form>
-    <br>
-    <a href="/memos">一覧に戻る</a>
-  </div>
+<p style="color: red;">
+  ※ この操作は取り消せません。本当に削除してよろしいですか？
+</p>
 
-</body>
-</html>
+<div>
+  <form action="/memos/{{ memo.id }}/delete" method="POST" style="display: inline;">
+    <button type="submit">削除</button>
+  </form>
+  <br>
+  <a href="/memos">一覧に戻る</a>
+</div>
+{% endblock %}

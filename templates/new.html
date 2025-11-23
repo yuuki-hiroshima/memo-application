@@ -1,29 +1,51 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>新規作成</title>
-</head>
-<body>
-  <h1>新規作成</h1>
+{% extends "base.html" %}
+{% block title %}新規作成{% endblock %}
+{% block content %}
+<h1>新規作成</h1>
 
-  {% if error_message %}
-    <p style="color: red;">
-      {{ error_message }}
-    </p>
-  {% endif %}
+<p>
+  <a href="/memos">一覧へ戻る</a>
+</p>
 
-  <form action="/memos/new" method="POST">
-    <label>タイトル<br><input name="title" type="text"></label>
-    <br>
-    <label>本文<br><textarea name="body" id="body" rows="6" cols="40" placeholder="本文を入力してください"></textarea></label>
-    <br>
-    <label>カテゴリ<br><input name="category" type="text"></label>
-    <br>
-    <input name="is_private" type="checkbox" value="True">プライバシー
-    <br>
-    <button type="submit">登録</button>
-  </form>
-</body>
-</html>
+{% if error_message %}
+  <p style="color: red; margin-bottom: 16px;">
+    {{ error_message }}
+  </p>
+{% endif %}
+
+<form action="/memos/new" method="POST">
+
+  <div>
+    <label for="title">タイトル</label><br>
+    <input id="title" name="title" type="text">
+  </div>
+
+  <br>
+
+  <div>
+    <label for="body">本文</label><br>
+    <textarea name="body" id="body" rows="6" cols="40" placeholder="本文を入力してください"></textarea>
+  </div>
+
+  <br>
+
+  <div>
+    <label for="category">カテゴリ</label><br>
+    <input id="category" name="category" type="text">
+  </div>
+
+  <br>
+
+  <div>
+    <label>
+      <input name="is_private" type="checkbox" value="True">
+      プライバシー
+    </label>
+  </div>
+
+  <br>
+
+  <button type="submit">作成</button>
+
+</form>
+{% endblock %}
