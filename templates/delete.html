@@ -1,29 +1,44 @@
 {% extends "base.html" %}
-{% block title %}削除画面{% endblock %}
+{% block title %}削除確認{% endblock %}
+
 {% block content %}
-<h1>本当に削除しますか？</h1>
+  <h1>本当に削除しますか？</h1>
 
-<p>
-  <a href="/memos">一覧へ戻る</a>
-</p>
+  <p>
+    <a href="/memos">一覧へ戻る</a>
+  </p>
 
-<div class="memo-detail">
-  <p>ID: {{ memo.id }}</p>
-  <p>タイトル: {{ memo.title }}</p>
-  <p>本文: {{ memo.body }}</p>
-  <p>メモ作成日時: {{ created_at }}</p>
-  <p>最終更新日時: {{ updated_at }}</p>
-</div>
+  <div class="form-section">
+    <div class="form-field">
+      <span class="form-label">ID</span>
+      <p>{{ memo.id }}</p>
+    </div>
 
-<p style="color: red;">
-  ※ この操作は取り消せません。本当に削除してよろしいですか？
-</p>
+    <div class="form-field">
+      <span class="form-label">タイトル</span>
+      <p>{{ memo.title }}</p>
+    </div>
 
-<div>
-  <form action="/memos/{{ memo.id }}/delete" method="POST" style="display: inline;">
-    <button type="submit">削除</button>
-  </form>
-  <br>
-  <a href="/memos">一覧に戻る</a>
-</div>
+    <div class="form-field">
+      <span class="form-label">本文</span>
+      <p>{{ memo.body }}</p>
+    </div>
+
+    <div class="form-field">
+      <span class="form-label">メモ作成日時</span>
+      <p>{{ created_at }}</p>
+    </div>
+
+    <div class="form-field">
+      <span class="form-label">最終更新日時</span>
+      <p>{{ updated_at }}</p>
+    </div>
+
+    <form action="/memos/{{ memo.id }}/delete" method="POST">
+      <div class="form-actions">
+        <button type="submit" class="button button-danger">削除する</button>
+        <a href="/memos" class="button">キャンセル</a>
+      </div>
+    </form>
+  </div>
 {% endblock %}

@@ -6,11 +6,36 @@ import datetime
 app = Flask(__name__)
 app.secret_key = "my_secret_key"
 
+
+# sidebar
+def build_sidebar_context():
+    """サイドバーで使う値をまとめて作成"""
+    all_memos = load_memos(MEMOS_PATH)
+    category_counts = {}
+    for m in all_memos:
+        cat = m.get("category")
+        if not cat:
+            cat = "未分類"
+        category_counts[cat] = category_counts.get(cat, 0) + 1
+    total_count = len(all_memos)
+
+    return {
+        "total_count": total_count,
+        "category_counts": category_counts
+    }
+
+
 # add
 @app.route("/memos/new", methods=["GET", "POST"])
 def new_memo():
     if request.method == "GET":
-        return render_template("new.html")
+        sidebar_ctx = build_sidebar_context()
+        return render_template(
+            "new.html",
+            error_message=None,
+            selected_category=None,
+            **sidebar_ctx,
+        )
     
     if request.method == "POST":
         memo = request.form
@@ -70,22 +95,13 @@ def show_memo_list():
         display_memos.append(memo)
 
     # サイドバーのカテゴリ表示用
-    all_memos = load_memos(MEMOS_PATH)
-    category_counts = {}
-    for m in all_memos:
-        cat = m["category"]
-        if not cat:
-            cat = "未分類"
-        category_counts[cat] = category_counts.get(cat, 0) + 1  # 取得したカテゴリをkeyとし、valueに1ずつ追加していく → {"仕事": 1, "おもちゃ": 4, "食事": 2}
-
-    total_count = len(all_memos)
+    sidebar_ctx = build_sidebar_context()
 
     return render_template(
         "list.html",
         memos=display_memos,
-        total_count=total_count,
-        category_counts=category_counts,
-        selected_category=category
+        selected_category=category,
+        **sidebar_ctx,
     )
 
 
@@ -107,7 +123,15 @@ def edit_memo(memo_id):
             flash("ご指定のメモが見つかりませんでした。")   # 編集画面の仕様上、render_tamplate だと memo や id が必要になるため redirect。しかし redirect ではメッセージを引数にできないため、flash を採用。
             return redirect("/memos")
         else:
-            return render_template("edit.html", memo=target_memo, memo_id=memo_id)
+            sidebar_ctx = build_sidebar_context()
+            return render_template(
+                "edit.html",
+                memo=target_memo,
+                memo_id=memo_id,
+                error_message=None,
+                selected_category=None,
+                **sidebar_ctx,
+            )
 
     if request.method == "POST":
         memos = load_memos(MEMOS_PATH)
@@ -170,12 +194,15 @@ def del_memo(memo_id):
             if not updated_at:
                 updated_at = "(記録なし)"
 
+            sidebar_ctx = build_sidebar_context()
             return render_template(
                 "delete.html",
                 memo=target_memo,
                 memo_id=memo_id,
                 created_at=created_at,
-                updated_at=updated_at
+                updated_at=updated_at,
+                selected_category=None,
+                **sidebar_ctx,
             )
     
     if request.method == "POST":

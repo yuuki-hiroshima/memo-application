@@ -1,29 +1,6 @@
 {% extends "base.html" %}
 {% block title %}メモ一覧{% endblock %}
 
-{% block sidebar %}
-  <div class="sidebar-search">
-    <input type="text" placeholder="検索ワードを入力してください">
-  </div>
-
-  <ul class="folder-list">
-    <li class="folder-header">
-      <a href="/memos">
-      すべてのメモ ({{ total_count }})
-      </a>
-    </li>
-
-    {% for category, count in category_counts.items() %}
-    <li>
-      <a href="/memos?category={{ category }}"
-        class="{% if selected_category == category %}is-active{% endif %}">
-        {{ category }} ({{ count }})
-      </a>
-    </li>
-  {% endfor %}
-  </ul>
-{% endblock %}
-
 {% block content %}
 <h1>メモ一覧</h1>
 
@@ -65,7 +42,7 @@
       <td>
         <a href="/memos/{{ memo.id }}/edit">編集</a>
         <br>
-        <a href="/memos/{{ memo.id }}/edit">削除</a>
+        <a href="/memos/{{ memo.id }}/delete">削除</a>
       </td>
     </tr>
     {% endfor %}

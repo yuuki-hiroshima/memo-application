@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block title %}新規作成{% endblock %}
+
 {% block content %}
 <h1>新規作成</h1>
 
@@ -8,44 +9,38 @@
 </p>
 
 {% if error_message %}
-  <p style="color: red; margin-bottom: 16px;">
+  <p class="flash-messages">
     {{ error_message }}
   </p>
 {% endif %}
 
-<form action="/memos/new" method="POST">
+<div class="form-section">
+  <form action="/memos/new" method="POST">
 
-  <div>
-    <label for="title">タイトル</label><br>
-    <input id="title" name="title" type="text">
+    <div class="form-field">
+      <label for="title" class="form-label">タイトル</label>
+      <input id="title" name="title" type="text" class="form-input">
+    </div>
+
+    <div class="form-field">
+      <label for="body" class="form-label">本文</label>
+      <textarea name="body" id="body" class="form-textarea" placeholder="本文を入力してください"></textarea>
+    </div>
+
+    <div class="form-field">
+      <label for="category" class="form-label">カテゴリ</label>
+      <input id="category" name="category" type="text" class="form-input">
+    </div>
+
+    <div class="form-field form-checkbox">
+        <input name="is_private" id="is_private" type="checkbox" value="True">
+        <label for="is_private">プライバシー</label>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="button button-primary">作成</button>
+    </div>
+
+    </form>
   </div>
-
-  <br>
-
-  <div>
-    <label for="body">本文</label><br>
-    <textarea name="body" id="body" rows="6" cols="40" placeholder="本文を入力してください"></textarea>
-  </div>
-
-  <br>
-
-  <div>
-    <label for="category">カテゴリ</label><br>
-    <input id="category" name="category" type="text">
-  </div>
-
-  <br>
-
-  <div>
-    <label>
-      <input name="is_private" type="checkbox" value="True">
-      プライバシー
-    </label>
-  </div>
-
-  <br>
-
-  <button type="submit">作成</button>
-
-</form>
 {% endblock %}

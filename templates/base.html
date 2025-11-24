@@ -13,19 +13,8 @@
     <aside class="sidebar">
       {% block sidebar %}
       
-        <div class="sidebar-search">
-          <input type="text" placeholder="検索ワードを入力してください">
-        </div>
-
-        <ul class="folder-list">
-          <li class="folder-header">すべてのメモ (100)</li>
-          <li>└ メインフォルダ (30)</li>
-          <li>└ サブフォルダ1 (12)</li>
-          <li>└ サブフォルダ2 (7)</li>
-          <li>└ サブフォルダ3 (11)</li>
-          <li>└ サブフォルダ4 (21)</li>
-          <li>└ サブフォルダ5 (9)</li>
-        </ul>
+        {% include "sidebar.html" %}
+        
       {% endblock %}
     </aside>
 

@@ -234,3 +234,63 @@ table tbody tr:hover {
 table td {
   font-size: 14px;
 }
+
+/* フォーム全体（新規 + 編集） */
+.form-section {
+  max-width: 7020px;
+}
+
+/* フォーム内の各入力行 */
+.form-field {
+  margin-bottom: 16px;
+}
+
+/* ラベル */
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+/* タイトルやカテゴリなど、単一の入力欄 */
+.form-input {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* 本文の入力欄 */
+.form-textarea {
+  width: 100%;
+  min-height: 140px;
+  padding: 8px 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+/* チェックボックス */
+.form-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+
+/* フォーム下部のボタン並び */
+.form-actions {
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
+}
+
+/* 戻るリンクなどを右側に寄せる用（一旦使用しない） */
+.form-actions-spacer {
+  margin-left: auto;
+}

@@ -1,53 +1,48 @@
 {% extends "base.html" %}
 {% block title %}編集{% endblock %}
+
 {% block content %}
-<h1>編集</h1>
+  <h1>編集</h1>
 
-<p>
-  <a href="/memos">一覧へ戻る</a>
-</p>
-
-<p>ID: {{ memo.id }}</p>
-
-{% if error_message %}
-  <p style="color: red; margin-bottom: 16px;">
-    {{ error_message }}
+  <p>
+    <a href="/memos">一覧へ戻る</a>
   </p>
-{% endif %}
 
-<form action="/memos/{{ memo_id }}/edit" method="POST">
+  <p>ID: {{ memo.id }}</p>
 
-  <div>
-    <label for="title">タイトル</label><br>
-    <input id="title" name="title" type="text" value="{{ memo.title}}">
+  {% if error_message %}
+    <p class="flash-messages">
+      {{ error_message }}
+    </p>
+  {% endif %}
+
+  <div class="form-section">
+    <form action="/memos/{{ memo_id }}/edit" method="POST">
+
+      <div class="form-field">
+        <label for="title" class="form-label">タイトル</label>
+        <input id="title" name="title" type="text" class="form-input" value="{{ memo.title }}">
+      </div>
+
+      <div class="form-field">
+        <label for="body" class="form-label">本文</label>
+        <textarea name="body" id="body" class="form-textarea" placeholder="本文を入力してください">{{ memo.body }}</textarea>
+      </div>
+
+      <div class="form-field">
+        <label for="category" class="form-label">カテゴリ</label>
+        <input id="category" name="category" type="text" class="form-input" value="{{ memo.category }}">
+      </div>
+
+      <div class="form-field form-checkbox">
+        <input name="is_private" id="is_private" type="checkbox" value="True" {% if memo.is_private %}checked{% endif %}>
+        <label for="is_private">プライバシー</label>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="button button-primary">変更を保存</button>
+      </div>
+
+    </form>
   </div>
-
-  <br>
-
-  <div>
-    <label for="body">本文</label><br>
-    <textarea name="body" id="body" rows="6" cols="40" placeholder="本文を入力してください">{{ memo.body }}</textarea>
-  </div>
-
-  <br>
-
-  <div>
-    <label for="category">カテゴリ</label><br>
-    <input id="category" name="category" type="text" value="{{ memo.category }}">
-  </div>
-
-  <br>
-
-  <div>
-    <label>
-      <input name="is_private" type="checkbox" value="True" {% if memo.is_private %}checked{% endif %}>
-      プライバシー
-    </label>
-  </div>
-
-  <br>
-
-  <button type="submit">変更を保存</button>
-
-</form>
 {% endblock %}
