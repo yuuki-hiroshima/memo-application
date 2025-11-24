@@ -17,7 +17,7 @@
     <li>
       <a href="/memos?category={{ category }}"
         class="{% if selected_category == category %}is-active{% endif %}">
-        └ {{ category }} ({{ count }})
+        {{ category }} ({{ count }})
       </a>
     </li>
   {% endfor %}
@@ -40,7 +40,7 @@
 {% endwith %}
 
 <form action="/memos/new">
-  <button type="submit">新規作成</button>
+  <button type="submit" class="button button-primary">新規作成</button>
 </form>
 
 <table>

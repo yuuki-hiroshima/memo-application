@@ -14,9 +14,10 @@ body {
 /* サイドバー */
 .sidebar {
   width: 260px;
-  background-color: #dedede;
-  padding: 20px;
+  background: #f7f7f7;
+  padding: 24px;
   box-sizing: border-box;
+  border-right: 1px solid #e0e0e0; 
 }
 
 /* サイドバー内の検索ボックス */
@@ -24,42 +25,89 @@ body {
   margin-bottom: 24px;
 }
 
+/* サイドバー内の検索ボックス */
 .sidebar-search input {
   width: 100%;
-  padding: 10px 12px;
-  border-radius: 16px;
-  border: 1px solid #ccc;
+  padding: 8px 12px;
   font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: #fff;
+  margin-bottom: 20px;
   box-sizing: border-box;
 }
 
-/* フォルダリスト */
+/* フォルダリスト全体 */
 .folder-list {
   list-style: none;
-  padding-left: 0;
-  margin: 0;
+  padding: 0;
+  margin: 16px 0 0;
   font-size: 14px;
 }
 
-.folder-list li {
+/* すべてのメモ部分 */
+.folder-list .folder-header {
+  font-weight: 600;
   margin-bottom: 8px;
-  cursor: pointer;
 }
 
-.folder-list li:hover {
-  text-decoration: underline;
+.folder-list .folder-header a {
+  display: block;
+  padding: 6px 10px;
+  border-radius: 8px;
+  color: #333;
+  text-decoration: none;
+}
+
+/* 個々のフォルダ */
+.folder-list li {
+  margin: 4px 0;
+}
+
+.folder-list li a {
+  display: block;
+  padding: 4px 12px 4px 22px;
+  border-radius: 8px;
+  color: #333;
+  text-decoration: none;
+  line-height: 1.6;
+  position: relative;
+}
+
+/* フォルダ行の先頭に「└」マークを表示 */
+.folder-list li a::before{
+  content: "└";
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  color: #777;
+}
+
+/* すべてのメモには「└」マークを表示しない */
+.folder-list .folder-header a::before {
+  content: "";
+}
+
+/* hover 時のハイライト */
+.folder-list a:hover {
+  background: #f0f4ff;
 }
 
 .folder-list a {
+  display: block;
+  padding: 6px 10px;
+  border-radius: 8px;
   text-decoration: none;
   color: #333;
 }
 
+/* 選択中のカテゴリの見た目 */
 .folder-list a.is-active {
-  font-weight: bold;
-  background-color: #ffffff;
-  border-radius: 12px;
-  padding: 4px 8px;
+  font-weight: 600;
+  background: #e3f2fd;
+  color: #01579b;
 }
 
 /* ヘッダ */
@@ -89,9 +137,13 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)
 }
 
-/* 見出し */
+/* メイン見出し */
 .main-inner h1 {
-  margin-top: 0;
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  letter-spacing: 0.5px;
+  color: #222;
 }
 
 /* フラッシュメッセージ */
@@ -135,6 +187,7 @@ th {
   cursor: pointer;
 }
 
+/* ボタンにアイコンが重なった時 */
 .button:hover {
   background-color: #555555;
 }
@@ -144,6 +197,40 @@ th {
   background-color: #c62828;
 }
 
+/* ボタンにアイコンが重なった時 */
 .button-danger:hover {
   background-color: #b71c1c;
+}
+
+/* 新規作成ボタン */
+.button-primary {
+  background-color: #1976d2;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-weight: 600;
+  font-size: 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* ボタンにアイコンが重なった時 */
+.button-primary:hover {
+  background-color: #1565c0;
+}
+
+/* テーブルヘッダー */
+table thead th {
+  background-color: #fafafa;
+  border-bottom: 2px solid #e0e0e0;
+  font-size: 14px;
+  padding: 10px 12px;
+}
+
+/* 行 hover で背景色がつく */
+table tbody tr:hover {
+  background-color: #f5faff;
+}
+
+/* セルの文字サイズも微調整 */
+table td {
+  font-size: 14px;
 }
