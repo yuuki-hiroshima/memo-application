@@ -6,47 +6,59 @@
 
 {% with messages = get_flashed_messages() %}
   {% if messages %}
-    <ul>
-      {% for message in messages %}
-      <li style="color: red;">
-        {{ message }}
-      </li>
-    {% endfor %}
-    </ul>
+    <div class="flash-messages">
+      <ul>
+        {% for message in messages %}
+        <li style="color: red;">
+          {{ message }}
+        </li>
+      {% endfor %}
+      </ul>
+    </div>
   {% endif %}
 {% endwith %}
 
-<form action="/memos/new">
+<form action="/memos/new" method="GET">
   <button type="submit" class="button button-primary">新規作成</button>
 </form>
 
-<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>タイトル</th>
-      <th>本文</th>
-      <th>作成日</th>
-      <th>更新日</th>
-      <th>操作</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for memo in memos %}
-    <tr>
-      <td>{{ memo["id"] }}</td>
-      <td><a href="/memos/{{ memo.id }}/edit">{{ memo["title"] }}</a></td>
-      <td>{{ memo["body"][:10] }}</td>
-      <td>{{ memo["created_at"] }}</td>
-      <td>{{ memo["updated_at"] }}</td>
-      <td>
-        <a href="/memos/{{ memo.id }}/edit">編集</a>
-        <br>
-        <a href="/memos/{{ memo.id }}/delete">削除</a>
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+<form action="/memos/bulk" method="POST">
+  <table>
+    <thead>
+      <tr>
+        <th>選択</th>
+        <th>ID</th>
+        <th>タイトル</th>
+        <th>本文</th>
+        <th>作成日</th>
+        <th>更新日</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for memo in memos %}
+      <tr>
+        <td><input type="checkbox" name="selected_ids" value="{{ memo.id }}"></td>
+        <td>{{ memo["id"] }}</td>
+        <td><a href="/memos/{{ memo.id }}/edit">{{ memo["title"] }}</a></td>
+        <td>{{ memo["body"][:10] }}</td>
+        <td>{{ memo["created_at"] }}</td>
+        <td>{{ memo["updated_at"] }}</td>
+        <td>
+          <a href="/memos/{{ memo.id }}/edit">編集</a>
+          <br>
+          <a href="/memos/{{ memo.id }}/delete">削除</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
+  <div class="form-actions">
+    <input type="text" name="move_category" class="form-input" placeholder="移動先カテゴリを入力">
+    <button type="submit" name="action" value="move" class="button">選択したメモを移動</button>
+    <button type="submit" name="action" value="delete" class="button button-danger">選択したメモを削除</button>
+
+  </div>
+</form>
 {% endblock %}

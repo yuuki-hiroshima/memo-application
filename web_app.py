@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, redirect, flash
-from memo_core import create_memo, list_memos, update_memo, delete_memo
+from memo_core import create_memo, list_memos, update_memo, delete_memo, move_memos
 from json_io import MEMOS_PATH, load_memos
 import datetime
 
@@ -217,6 +217,57 @@ def del_memo(memo_id):
         else:
             flash(f"「{d_memo['title']}」を削除しました。")
             return redirect("/memos")
+        
+
+# select + action
+@app.route("/memos/bulk", methods=["POST"])
+def bulk_memos():
+    selected_ids = request.form.getlist("selected_ids")
+    if not selected_ids:
+        flash("メモが選択されていません。")
+        return redirect("/memos")
+    
+    action = request.form.get("action")     # delete or move
+
+    int_ids = []
+    for s in selected_ids:
+        try:
+            int_id = int(s)
+        except ValueError:
+            flash("選択したデータのIDに問題があります。")
+            return redirect("/memos")
+        int_ids.append(int_id)
+    
+    delete_count = 0
+    if action == "delete":
+        for delete_id in int_ids:
+            result = delete_memo(MEMOS_PATH, delete_id)
+            if result:
+                delete_count += 1
+
+        if delete_count > 0:
+            flash(f"{delete_count}件のメモを削除しました。")
+        else:
+            flash("削除できるメモが見つかりませんでした。")
+        return redirect("/memos")
+    
+    elif action == "move":
+        move_category = request.form.get("move_category")
+        if not move_category or move_category.strip() == "":
+            flash("移動先のカテゴリ名を指定してください。")
+            return redirect("/memos")
+        
+        moved_count = move_memos(MEMOS_PATH, int_ids, move_category)
+        if moved_count > 0:
+            flash(f"{moved_count} 件のメモを {move_category} へ移動しました。")
+        else:
+            flash("移動対象のメモが見つかりません。")
+        
+        return redirect("/memos")
+        
+    else:
+        flash("「削除」または「移動」を選択してください。")
+        return redirect("/memos")
 
         
 # 時間の表示調整用

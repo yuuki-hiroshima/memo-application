@@ -134,3 +134,29 @@ def delete_memo(filepath, id):
     except Exception as e:
         print(f"メモを削除中にエラーが発生しました: {e}")
         return False
+    
+
+def move_memos(filepath, id_list, new_category):
+    try:
+        memos = load_memos(filepath)
+        if not memos:
+            return 0
+
+        moved_count = 0
+        now = datetime.now().isoformat()
+        for memo in memos:
+            if memo["id"] in id_list:
+                memo["category"] = new_category
+                memo["updated_at"] = now 
+                moved_count += 1
+            else:
+                continue
+
+        if moved_count > 0:
+            save_memos(filepath, memos)
+
+        return moved_count
+    
+    except Exception as e:
+        print(f"フォルダの移動中にエラーが発生しました: {e}")
+        return False
