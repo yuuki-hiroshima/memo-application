@@ -2,43 +2,45 @@
 {% block title %}削除確認{% endblock %}
 
 {% block content %}
-  <h1>本当に削除しますか？</h1>
+  <h1>削除確認</h1>
 
   <p>
-    <a href="/memos">一覧へ戻る</a>
+    <a href="/memos" class="button">
+      一覧へ戻る
+    </a>
   </p>
 
-  <div class="form-section">
-    <div class="form-field">
+  <p id="caution">⚠️ 一度削除すると復元できません！</p>
+
+  <div class="form-card">
+    <div class="form-group">
       <span class="form-label">ID</span>
-      <p>{{ memo.id }}</p>
+      <p class="form-info">{{ memo.id }}</p>
     </div>
 
-    <div class="form-field">
+    <div class="form-group">
       <span class="form-label">タイトル</span>
-      <p>{{ memo.title }}</p>
+      <p class="form-info">{{ memo.title }}</p>
     </div>
 
-    <div class="form-field">
+    <div class="form-group">
       <span class="form-label">本文</span>
-      <p>{{ memo.body }}</p>
+      <p class="form-info">{{ memo.body }}</p>
     </div>
 
-    <div class="form-field">
+    <div class="form-group">
       <span class="form-label">メモ作成日時</span>
-      <p>{{ created_at }}</p>
+      <p class="form-info">{{ created_at }}</p>
     </div>
 
-    <div class="form-field">
+    <div class="form-group">
       <span class="form-label">最終更新日時</span>
-      <p>{{ updated_at }}</p>
+      <p class="form-info">{{ updated_at }}</p>
     </div>
 
-    <form action="/memos/{{ memo.id }}/delete" method="POST">
-      <div class="form-actions">
-        <button type="submit" class="button button-danger">削除する</button>
-        <a href="/memos" class="button">キャンセル</a>
-      </div>
+    <form action="/memos/{{ memo.id }}/delete" method="POST" class="form-actions">
+      <button type="submit" class="button button-danger">削除する</button>
+      <a href="/memos" class="button">キャンセル</a>
     </form>
   </div>
 {% endblock %}
