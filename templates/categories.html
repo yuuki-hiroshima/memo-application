@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>カテゴリ管理</title>
+</head>
+<body>
+  <h1>カテゴリ管理</h1>
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="flash-messages">
+        <ul>
+          {% for message in messages %}
+          <li style="color: red;">
+            {{ message }}
+          </li>
+        {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <table>
+    <thead>
+      <tr>
+        <th>カテゴリ名</th>
+        <th>件数</th>
+        <th>名前変更</th>
+        <th>削除</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ カテゴリ名 }}</td>
+        <td>{{ 件数 }}</td>
+        <td><button>変更</button></td>
+        <td><button>削除</button></td>
+      </tr>
+    </tbody>
+  </table>
+  
+</body>
+</html>

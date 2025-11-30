@@ -88,5 +88,32 @@
     "is_private": false,
     "created_at": "2025-11-29T22:31:27.739051",
     "updated_at": "2025-11-29T22:31:27.739051"
+  },
+  {
+    "id": 17,
+    "title": "サンプル",
+    "body": "カテゴリが未分類になるか検証",
+    "category": "",
+    "is_private": false,
+    "created_at": "2025-11-30T15:35:27.177428",
+    "updated_at": "2025-11-30T15:39:32.126765"
+  },
+  {
+    "id": 18,
+    "title": "サンプリング",
+    "body": "カテゴリの動作チェック",
+    "category": "not-category",
+    "is_private": false,
+    "created_at": "2025-11-30T15:39:52.332798",
+    "updated_at": "2025-11-30T15:39:52.332798"
+  },
+  {
+    "id": 19,
+    "title": "未分類のメモ",
+    "body": "未分類のメモ",
+    "category": "未分類",
+    "is_private": false,
+    "created_at": "2025-11-30T15:40:40.140392",
+    "updated_at": "2025-11-30T15:40:40.140392"
   }
 ]

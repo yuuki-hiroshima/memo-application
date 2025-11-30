@@ -19,7 +19,7 @@ def create_memo(filepath, title, body, category, is_private):
         now = datetime.now().isoformat()
 
         if not category:
-            category = "all"
+            category = "未分類"
 
         new_memo = {
             "id": id,
@@ -159,4 +159,62 @@ def move_memos(filepath, id_list, new_category):
     
     except Exception as e:
         print(f"フォルダの移動中にエラーが発生しました: {e}")
+        return False
+    
+
+def rename_category(filepath, old_name, new_name):
+    try:
+        if old_name == new_name:
+            return 0
+        
+        memos = load_memos(filepath)
+        if not memos:
+            return 0
+
+        rename_count = 0
+        now = datetime.now().isoformat()
+        for memo in memos:
+            if memo["category"] == old_name:
+                memo["category"] = new_name
+                memo["updated_at"] = now
+                rename_count += 1
+            else:
+                continue
+
+        if rename_count > 0:
+            save_memos(filepath, memos)
+
+        return rename_count
+    
+    except Exception as e:
+        print(f"フォルダ名の編集中にエラーが発生しました: {e}")
+        return False
+    
+
+def delete_category(filepath, target_name, fallback=None):
+    try:
+        if fallback is None:
+            fallback = ""
+
+        memos = load_memos(filepath)
+        if not memos:
+            return 0
+
+        change_category_count = 0
+        now = datetime.now().isoformat()
+        for memo in memos:
+            if memo["category"] == target_name:
+                memo["category"] = fallback
+                memo["updated_at"] = now
+                change_category_count += 1
+            else:
+                continue
+
+        if change_category_count > 0:
+            save_memos(filepath, memos)
+        
+        return change_category_count
+    
+    except Exception as e:
+        print(f"カテゴリの削除中にエラーが発生しました: {e}")
         return False

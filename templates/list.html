@@ -55,9 +55,14 @@
   </table>
 
   <div class="form-actions">
-    <input type="text" name="move_category" class="form-input" placeholder="移動先カテゴリを入力">
+    <select name="move_category" class="form_input">
+      <option value="">カテゴリを選択</option>
+      {% for category in category_options %}
+      <option value="{{ category }}">{{ category }}</option>
+      {% endfor %}
+    </select>
     <button type="submit" name="action" value="move" class="button">選択したメモを移動</button>
-    <button type="submit" name="action" value="delete" class="button button-danger">選択したメモを削除</button>
+    <button type="submit" name="action" value="delete" class="button button-danger" onclick="return confirm('選択したメモを削除します。よろしいですか？')">選択したメモを削除</button>
 
   </div>
 </form>
