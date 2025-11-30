@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>カテゴリ管理</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}カテゴリ管理{% endblock %}
+{% block content %}
   <h1>カテゴリ管理</h1>
 
   {% with messages = get_flashed_messages() %}
@@ -32,14 +27,28 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>{{ カテゴリ名 }}</td>
-        <td>{{ 件数 }}</td>
-        <td><button>変更</button></td>
-        <td><button>削除</button></td>
-      </tr>
+      {% for category_name, count in category_counts.items() %}
+        <tr>
+          <td>{{ category_name }}</td>
+          <td>{{ count }}</td>
+          <td>
+            <form action="/categories" method="POST" class="rename-form">
+              <input type="hidden" name="action" value="rename">
+              <input type="hidden" name="old_name" value="{{ category_name }}">
+              <input type="text" name="new_name" class="form-input" placeholder="新しい名前">
+              <button class="button">変更</button>
+            </form>
+          </td>
+          <td>
+            <form action="/categories" method="POST">
+              <input type="hidden" name="action" value="delete">
+              <input type="hidden" name="target_name" value="{{ category_name }}">
+              <button class="button button-danger" onclick="return confirm('「{{ category_name }}」を削除します。よろしいですか？')">削除</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
     </tbody>
   </table>
   
-</body>
-</html>
+{% endblock %}

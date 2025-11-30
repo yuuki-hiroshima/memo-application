@@ -1,5 +1,23 @@
 [
   {
+    "id": 1,
+    "title": "新しいデータ",
+    "body": "編集機能チェックをしている",
+    "category": "データ関連",
+    "is_private": false,
+    "created_at": "2025-11-17T14:51:57.468644",
+    "updated_at": "2025-11-18T22:56:04.037439"
+  },
+  {
+    "id": 2,
+    "title": "新しい買い物",
+    "body": "ココアとミルクを買う",
+    "category": "食品類",
+    "is_private": false,
+    "created_at": "2025-11-17T14:52:39.661333",
+    "updated_at": "2025-11-18T22:38:00.311326"
+  },
+  {
     "id": 3,
     "title": "仕事メモ",
     "body": "会議の時間：14:00",
@@ -12,81 +30,36 @@
     "id": 4,
     "title": "編集テスト3回目",
     "body": "本文を編集3回目",
-    "category": "テスト",
+    "category": "テスト3回目",
     "is_private": false,
-    "created_at": "2025-11-29T22:29:14.147891",
+    "created_at": "2025-11-17T14:54:52.958040",
     "updated_at": "2025-11-17T16:40:59.494432"
   },
   {
-    "id": 9,
-    "title": "新規メモです。",
-    "body": "削除してOK",
+    "id": 5,
+    "title": "カテゴリなしテスト",
+    "body": "カテゴリにNoneを渡しました。",
+    "category": "all",
+    "is_private": false,
+    "created_at": "2025-11-17T14:56:30.764519",
+    "updated_at": "2025-11-17T14:56:30.764519"
+  },
+  {
+    "id": 6,
+    "title": "CLIテスト",
+    "body": "CLI本文テスト",
     "category": "テスト",
     "is_private": false,
-    "created_at": "2025-11-29T22:29:14.147911",
-    "updated_at": "2025-11-29T19:27:50.638787"
+    "created_at": "2025-11-18T16:34:23.968594",
+    "updated_at": "2025-11-18T16:34:23.968594"
   },
   {
-    "id": 10,
-    "title": "データテスト",
-    "body": "メモ帳の機能を確認しています。",
-    "category": "テスト",
-    "is_private": false,
-    "created_at": "2025-11-29T22:29:14.147914",
-    "updated_at": "2025-11-29T19:28:15.459001"
-  },
-  {
-    "id": 11,
-    "title": "買い物",
-    "body": "マヨネーズ・ケチャップ",
-    "category": "買い物",
-    "is_private": false,
-    "created_at": "2025-11-29T22:29:53.418908",
-    "updated_at": "2025-11-29T22:29:53.418908"
-  },
-  {
-    "id": 12,
-    "title": "スマホ",
-    "body": "機種変更",
-    "category": "デジタル",
-    "is_private": false,
-    "created_at": "2025-11-29T22:30:11.135185",
-    "updated_at": "2025-11-29T22:30:11.135185"
-  },
-  {
-    "id": 13,
-    "title": "家電量販店",
-    "body": "エアコン・洗濯機・空気清浄機",
-    "category": "家電",
-    "is_private": false,
-    "created_at": "2025-11-29T22:30:29.881043",
-    "updated_at": "2025-11-29T22:30:29.881043"
-  },
-  {
-    "id": 14,
-    "title": "学校",
-    "body": "1日に6時間勉強する",
-    "category": "義務教育",
-    "is_private": false,
-    "created_at": "2025-11-29T22:30:54.827525",
-    "updated_at": "2025-11-29T22:30:54.827525"
-  },
-  {
-    "id": 15,
-    "title": "ストレッチ",
-    "body": "YouTube動画を見ながら運動",
-    "category": "運動",
-    "is_private": false,
-    "created_at": "2025-11-29T22:31:14.207600",
-    "updated_at": "2025-11-29T22:31:14.207600"
-  },
-  {
-    "id": 16,
-    "title": "テニス",
-    "body": "趣味はテニス",
-    "category": "スポーツ",
-    "is_private": false,
-    "created_at": "2025-11-29T22:31:27.739051",
-    "updated_at": "2025-11-29T22:31:27.739051"
+    "id": 7,
+    "title": "CLIテスト2",
+    "body": "CLI本文テスト2",
+    "category": "テスト2",
+    "is_private": true,
+    "created_at": "2025-11-18T16:35:09.749980",
+    "updated_at": "2025-11-18T16:35:09.749980"
   }
 ]

@@ -277,13 +277,71 @@ def bulk_memos():
         return redirect("/memos")
     
 
-# rename_category
-@app.route("/categories/rename" methods=["POST"])
-def rename_categories():
+# show_category
+@app.route("/categories", methods=["GET", "POST"])
+def show_categories():
+    if request.method == "GET":
+        sidebar_ctx = build_sidebar_context()
+        return render_template(
+            "categories.html",
+            selected_category=None,
+            category_counts=sidebar_ctx["category_counts"],
+            total_count=sidebar_ctx["total_count"],
+            category_options=sidebar_ctx["category_options"],
+        )
     
+    action = request.form.get("action")
 
-# delete_category
+    if action == "rename":
+        old_name = request.form.get("old_name")
+        new_name = request.form.get("new_name", "").strip()
+        if not new_name:
+            flash("新しい名前を入力してください。")
+            return redirect("/categories")
+        if old_name == new_name:
+            flash("同じ名前のため変更されませんでした。")
+            return redirect("/categories")
+        
+        old_key = "" if old_name == "未分類" else old_name
+        
+        rename_cat = rename_category(MEMOS_PATH, old_key, new_name)
+        
+        if rename_cat == 0:
+            flash("変更はありませんでした。")
+        elif rename_cat is False:
+            flash("フォルダ名の編集集にエラーが発生しました。")
+        else:
+            flash(f"{rename_cat}件のカテゴリを編集しました。")
+        
+        return redirect("categories")
+    
+    elif action == "delete":
+        target_name = request.form.get("target_name")
 
+        if not target_name:
+            flash("削除するカテゴリが指定されていません。")
+            return redirect("/categories")
+        
+        if target_name == "未分類":
+            flash("「未分類」のカテゴリは削除できません。")
+            return redirect("/categories")
+        
+        target_key = "" if target_name == "未分類" else target_name
+        
+        moved_count = delete_category(MEMOS_PATH, target_key)
+
+        if moved_count == 0:
+            flash("対象のカテゴリに該当するメモはありませんでした。")
+        elif moved_count is False:
+            flash("カテゴリ削除中にエラーが発生しました。")
+        else:
+            flash(f"{moved_count}件のメモを削除しました。")
+
+        return redirect("/categories")
+    
+    else:
+        flash("不正な操作が指定されました。")
+        return redirect("/categories")
         
 # 時間の表示調整用
 def time_display_organaize(arg_time):
