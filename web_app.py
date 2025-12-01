@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, redirect, flash
 from memo_core import create_memo, list_memos, update_memo, delete_memo, move_memos, rename_category, delete_category
-from json_io import MEMOS_PATH, load_memos
+from json_io import MEMOS_PATH, CATEGORIES_PATH, load_memos, load_categories
 import datetime
 
 app = Flask(__name__)
@@ -9,26 +9,36 @@ app.secret_key = "my_secret_key"
 
 # sidebar
 def build_sidebar_context():
-    """サイドバーで使う値をまとめて作成"""
+    """サイドバーに必要なカテゴリ情報をまとめて返す"""
+    
+    categories = load_categories(CATEGORIES_PATH)
+    if not categories:
+        categories = ["未分類"]
+
     all_memos = load_memos(MEMOS_PATH)
-    category_counts = {}
-    category_options = []
+    
+    category_counts = {cat: 0 for cat in categories}
+
+    if "未分類" not in category_counts:
+        category_counts["未分類"] = 0
+
     for m in all_memos:
-        cat = m.get("category")
+        cat = m.get("category", "").strip()
         if not cat:
             cat = "未分類"
-
-        category_counts[cat] = category_counts.get(cat, 0) + 1
         
-        if cat not in category_options:
-            category_options.append(cat)
+        if cat not in category_counts:
+            category_counts[cat] = 0
+        category_counts[cat] += 1
+
+    category_options = list(category_counts.keys())
 
     total_count = len(all_memos)   
 
     return {
         "total_count": total_count,
         "category_counts": category_counts,
-        "category_options": category_options
+        "category_options": category_options,
     }
 
 

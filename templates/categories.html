@@ -17,6 +17,14 @@
     {% endif %}
   {% endwith %}
 
+  <h2>新規カテゴリの作成</h2>
+  <form action="/categories" method="POST" class="create-category-form">
+    <input type="hidden" name="action" value="create">
+    <input type="text" name="new_category" placeholder="カテゴリ名を入力" class="form-input">
+    <button class="button button-primary">作成</button>
+  </form>
+      
+
   <table>
     <thead>
       <tr>
