@@ -52,8 +52,6 @@ def list_memos(filepath, category, sort):
     
     if category is None:
         target = memos
-    elif category == "":
-        target = [memo for memo in memos if not memo["category"]]
     else:
         target = [memo for memo in memos if memo["category"] == category]
 
@@ -91,6 +89,9 @@ def update_memo(filepath, id, title, body, category):
                 target_memo["body"] = body
 
             if category is not None:
+                category = category.strip()
+                if not category:
+                    category = "未分類"
                 target_memo["category"] = category
 
             now = datetime.now().isoformat()
@@ -194,7 +195,7 @@ def rename_category(filepath, old_name, new_name):
 def delete_category(filepath, target_name, fallback=None):
     try:
         if fallback is None:
-            fallback = ""
+            fallback = "未分類"
 
         memos = load_memos(filepath)
         if not memos:

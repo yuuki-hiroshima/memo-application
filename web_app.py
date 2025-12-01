@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, redirect, flash
 from memo_core import create_memo, list_memos, update_memo, delete_memo, move_memos, rename_category, delete_category
-from json_io import MEMOS_PATH, CATEGORIES_PATH, load_memos, load_categories
+from json_io import MEMOS_PATH, CATEGORIES_PATH, load_memos, load_categories, save_categories
 import datetime
 
 app = Flask(__name__)
@@ -86,12 +86,7 @@ def show_memo_list():
     category = request.args.get("category")
     sort = None
 
-    if category == "未分類":
-        category_filter = ""
-    else:
-        category_filter = category
-
-    memos = list_memos(MEMOS_PATH, category_filter, sort)
+    memos = list_memos(MEMOS_PATH, category, sort)
 
     display_memos = []
     for memo in memos:
@@ -106,6 +101,7 @@ def show_memo_list():
             updated_at = "(記録なし)"
         memo["updated_at"] = updated_at
 
+        # 古いデータ対応用（空白を排除）。問題がなくなったら削除してもOK
         if not memo["category"]:
             memo["category"] = "未分類"
 
@@ -315,15 +311,23 @@ def show_categories():
         old_key = "" if old_name == "未分類" else old_name
         
         rename_cat = rename_category(MEMOS_PATH, old_key, new_name)
+
+        categories = load_categories(CATEGORIES_PATH)
+
+        for i, cat in enumerate(categories):
+            if cat == old_name:
+                categories[i] = new_name
         
-        if rename_cat == 0:
-            flash("変更はありませんでした。")
-        elif rename_cat is False:
+        save_categories(CATEGORIES_PATH, categories)
+        
+        if rename_cat is False:
             flash("フォルダ名の編集集にエラーが発生しました。")
+        elif rename_cat == 0:
+            flash("変更はありませんでした（「未分類」は変更できません）。")
         else:
             flash(f"{rename_cat}件のカテゴリを編集しました。")
         
-        return redirect("categories")
+        return redirect("/categories")
     
     elif action == "delete":
         target_name = request.form.get("target_name")
@@ -340,13 +344,43 @@ def show_categories():
         
         moved_count = delete_category(MEMOS_PATH, target_key)
 
-        if moved_count == 0:
-            flash("対象のカテゴリに該当するメモはありませんでした。")
-        elif moved_count is False:
+        categories = load_categories(CATEGORIES_PATH)
+
+        if target_name in categories:
+            categories.remove(target_name)
+            save_categories(CATEGORIES_PATH, categories)
+        else:
+            flash("カテゴリ一覧に該当の名前がありませんでした（データがズレている可能性があります）。")
+
+        if moved_count is False:
             flash("カテゴリ削除中にエラーが発生しました。")
+        elif moved_count == 0:
+            flash("対象のカテゴリに該当するメモはありませんでした。")
         else:
             flash(f"{moved_count}件のメモを削除しました。")
 
+        return redirect("/categories")
+    
+    elif action == "create":
+        new_category = (request.form.get("new_category") or "").strip()
+        if new_category == "":
+            flash(f"新しい名前を入力してください。")
+            return redirect("/categories")
+
+        category_list = load_categories(CATEGORIES_PATH)
+
+        if new_category in category_list:
+            flash("すでに同じ名前が存在します。")
+            return redirect("/categories")
+        
+        if new_category in ("未分類", "すべてのメモ"):
+            flash("この名前は使用できません。")
+            return redirect("/categories")
+        
+        category_list.append(new_category)
+        save_categories(CATEGORIES_PATH, category_list)
+
+        flash(f"「{new_category}」をフォルダを作成しました。")
         return redirect("/categories")
     
     else:

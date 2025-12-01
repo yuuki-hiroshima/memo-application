@@ -3,117 +3,171 @@
     "id": 3,
     "title": "仕事メモ",
     "body": "会議の時間：14:00",
-    "category": "",
+    "category": "カテゴリ新規作成テスト",
     "is_private": false,
     "created_at": "2025-11-17T14:53:07.547812",
-    "updated_at": "2025-11-30T18:43:24.804335"
+    "updated_at": "2025-12-01T21:17:27.662254"
   },
   {
     "id": 4,
     "title": "編集テスト3回目",
     "body": "本文を編集3回目",
-    "category": "カテゴリ名の変更テストです",
+    "category": "カテゴリ新規作成テスト",
     "is_private": false,
     "created_at": "2025-11-29T22:29:14.147891",
-    "updated_at": "2025-11-30T18:42:58.584845"
+    "updated_at": "2025-12-01T21:17:44.047996"
   },
   {
     "id": 9,
     "title": "新規メモです。",
     "body": "削除してOK",
-    "category": "カテゴリ名の変更テストです",
+    "category": "カテゴリ新規作成テスト",
     "is_private": false,
     "created_at": "2025-11-29T22:29:14.147911",
-    "updated_at": "2025-11-30T18:42:58.584845"
+    "updated_at": "2025-12-01T21:17:44.047996"
   },
   {
     "id": 10,
     "title": "データテスト",
     "body": "メモ帳の機能を確認しています。",
-    "category": "カテゴリ名の変更テストです",
+    "category": "カテゴリ新規作成テスト",
     "is_private": false,
     "created_at": "2025-11-29T22:29:14.147914",
-    "updated_at": "2025-11-30T18:42:58.584845"
+    "updated_at": "2025-12-01T21:17:44.047996"
   },
   {
     "id": 11,
     "title": "買い物",
     "body": "マヨネーズ・ケチャップ",
-    "category": "買い物",
+    "category": "カテゴリ新規作成テスト",
     "is_private": false,
     "created_at": "2025-11-29T22:29:53.418908",
-    "updated_at": "2025-11-29T22:29:53.418908"
+    "updated_at": "2025-12-01T21:17:27.662254"
   },
   {
     "id": 12,
     "title": "スマホ",
     "body": "機種変更",
-    "category": "デジタル",
+    "category": "カテゴリ新規作成テスト",
     "is_private": false,
     "created_at": "2025-11-29T22:30:11.135185",
-    "updated_at": "2025-11-29T22:30:11.135185"
+    "updated_at": "2025-12-01T21:17:27.662254"
   },
   {
     "id": 13,
     "title": "家電量販店",
     "body": "エアコン・洗濯機・空気清浄機",
-    "category": "家電",
+    "category": "カテゴリ新規作成テスト",
     "is_private": false,
     "created_at": "2025-11-29T22:30:29.881043",
-    "updated_at": "2025-11-29T22:30:29.881043"
+    "updated_at": "2025-12-01T21:17:46.433999"
   },
   {
     "id": 14,
     "title": "学校",
     "body": "1日に6時間勉強する",
-    "category": "義務教育",
+    "category": "カテゴリ新規作成テスト",
     "is_private": false,
     "created_at": "2025-11-29T22:30:54.827525",
-    "updated_at": "2025-11-29T22:30:54.827525"
+    "updated_at": "2025-12-01T21:17:48.833877"
   },
   {
     "id": 15,
     "title": "ストレッチ",
     "body": "YouTube動画を見ながら運動",
-    "category": "運動",
+    "category": "カテゴリ新規作成テスト",
     "is_private": false,
     "created_at": "2025-11-29T22:31:14.207600",
-    "updated_at": "2025-11-29T22:31:14.207600"
+    "updated_at": "2025-12-01T21:17:50.648384"
   },
   {
     "id": 16,
     "title": "テニス",
     "body": "趣味はテニス",
-    "category": "スポーツ",
+    "category": "カテゴリ新規作成テスト",
     "is_private": false,
     "created_at": "2025-11-29T22:31:27.739051",
-    "updated_at": "2025-11-29T22:31:27.739051"
+    "updated_at": "2025-12-01T21:17:52.692345"
   },
   {
     "id": 17,
     "title": "サンプル",
     "body": "カテゴリが未分類になるか検証",
-    "category": "",
+    "category": "カテゴリ新規作成テスト",
     "is_private": false,
     "created_at": "2025-11-30T15:35:27.177428",
-    "updated_at": "2025-11-30T15:39:32.126765"
+    "updated_at": "2025-12-01T21:17:27.662254"
   },
   {
     "id": 18,
     "title": "サンプリング",
     "body": "カテゴリの動作チェック",
-    "category": "not-category",
+    "category": "カテゴリ新規作成テスト",
     "is_private": false,
     "created_at": "2025-11-30T15:39:52.332798",
-    "updated_at": "2025-11-30T15:39:52.332798"
+    "updated_at": "2025-12-01T21:17:54.282392"
   },
   {
     "id": 19,
-    "title": "未分類のメモ",
-    "body": "未分類のメモ",
+    "title": "未分類",
+    "body": "未分類のテスト",
     "category": "未分類",
     "is_private": false,
-    "created_at": "2025-11-30T15:40:40.140392",
-    "updated_at": "2025-11-30T15:40:40.140392"
+    "created_at": "2025-12-01T21:21:14.800047",
+    "updated_at": "2025-12-01T21:22:03.245994"
+  },
+  {
+    "id": 20,
+    "title": "動作チェック",
+    "body": "カテゴリーの観察",
+    "category": "未分類",
+    "is_private": false,
+    "created_at": "2025-12-01T21:52:47.430717",
+    "updated_at": "2025-12-01T21:52:47.430717"
+  },
+  {
+    "id": 21,
+    "title": "名前",
+    "body": "田中・佐藤・鈴木",
+    "category": "名前",
+    "is_private": false,
+    "created_at": "2025-12-01T21:53:32.175410",
+    "updated_at": "2025-12-01T21:53:32.175410"
+  },
+  {
+    "id": 22,
+    "title": "野菜",
+    "body": "にんじん・だいこん・はくさい・たまねぎ",
+    "category": "野菜",
+    "is_private": false,
+    "created_at": "2025-12-01T21:53:55.888316",
+    "updated_at": "2025-12-01T21:53:55.888316"
+  },
+  {
+    "id": 23,
+    "title": "お酒",
+    "body": "ビール・焼酎・日本酒・ワイン・ウイスキー",
+    "category": "お酒",
+    "is_private": false,
+    "created_at": "2025-12-01T21:54:20.850613",
+    "updated_at": "2025-12-01T21:54:20.850613"
+  },
+  {
+    "id": 24,
+    "title": "遊び",
+    "body": "ゲーム",
+    "category": "遊び",
+    "is_private": false,
+    "created_at": "2025-12-01T21:54:34.426124",
+    "updated_at": "2025-12-01T21:54:34.426124"
+  },
+  {
+    "id": 25,
+    "title": "未分類のテスト",
+    "body": "未分類の挙動チェック",
+    "category": "未分類",
+    "is_private": false,
+    "created_at": "2025-12-01T21:55:14.428559",
+    "updated_at": "2025-12-01T21:55:14.428559"
   }
 ]
