@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}プライベートメモ{% endblock %}
+{% block content %}
+  <h1>プライベートメモ</h1>
+
+  {# フラッシュメッセージ表示（他の画面と同じ） #}
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="flash-messages">
+        <ul>
+          {% for message in messages %}
+            <li style="color: red;">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  {# ロック中：パスワード入力フォームだけ表示 #}
+  {% if not memos %}
+    <form method="POST" action="/private">
+      <input type="password" name="password" placeholder="パスワードを入力">
+      <button type="submit" class="button">開く</button>
+    </form>
+
+  {# ロック解除後：プライベートメモ一覧を表示 #}
+  {% else %}
+
+    <form action="/memos/new" method="GET">
+      <button type="submit" class="button button-primary">新規作成</button>
+    </form>
+
+    <form action="/memos/bulk" method="POST">
+      <table>
+        <thead>
+          <tr>
+            <th>選択</th>
+            <th>ID</th>
+            <th>タイトル</th>
+            <th>本文</th>
+            <th>作成日</th>
+            <th>更新日</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for memo in memos %}
+            <tr>
+              <td><input type="checkbox" name="selected_ids" value="{{ memo.id }}"></td>
+              <td>{{ memo.id }}</td>
+              <td><a href="/memos/{{ memo.id }}/edit">{{ memo.title }}</a></td>
+              <td>{{ memo.body[:10] }}</td>
+              <td>{{ memo.created_at }}</td>
+              <td>{{ memo.updated_at }}</td>
+              <td class="table-actions">
+                <a href="/memos/{{ memo.id }}/edit" class="button button-sm">
+                  編集
+                </a>
+                <a href="/memos/{{ memo.id }}/delete" class="button button-sm button-danger">
+                  削除
+                </a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div class="form-actions">
+        <select name="move_category" class="form_input">
+          <option value="">カテゴリを選択</option>
+          {% for category in category_options %}
+            <option value="{{ category }}">{{ category }}</option>
+          {% endfor %}
+        </select>
+        <button type="submit" name="action" value="move" class="button">
+          選択したメモを移動
+        </button>
+        <button
+          type="submit"
+          name="action"
+          value="delete"
+          class="button button-danger"
+          onclick="return confirm('選択したメモを削除します。よろしいですか？')"
+        >
+          選択したメモを削除
+        </button>
+      </div>
+    </form>
+
+  {% endif %}
+{% endblock %}

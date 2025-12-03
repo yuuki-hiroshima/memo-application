@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block title %}カテゴリ管理{% endblock %}
+
 {% block content %}
   <h1>カテゴリ管理</h1>
 
@@ -8,10 +9,10 @@
       <div class="flash-messages">
         <ul>
           {% for message in messages %}
-          <li style="color: red;">
-            {{ message }}
-          </li>
-        {% endfor %}
+            <li style="color: red;">
+              {{ message }}
+            </li>
+          {% endfor %}
         </ul>
       </div>
     {% endif %}
@@ -20,43 +21,60 @@
   <h2>新規カテゴリの作成</h2>
   <form action="/categories" method="POST" class="create-category-form">
     <input type="hidden" name="action" value="create">
-    <input type="text" name="new_category" placeholder="カテゴリ名を入力" class="form-input">
+    <input type="text" name="new_category" placeholder="カテゴリ名を入力" class="form-input" required>
     <button class="button button-primary">作成</button>
   </form>
-      
 
-  <table>
+  <table class="category-table">
     <thead>
       <tr>
-        <th>カテゴリ名</th>
-        <th>件数</th>
-        <th>名前変更</th>
-        <th>削除</th>
+        <th class="category-col-name">カテゴリ名</th>
+        <th class="category-col-count">件数</th>
+        <th class="category-col-rename">名前変更</th>
+        <th class="category-col-delete">削除</th>
       </tr>
     </thead>
     <tbody>
+      {# まず「未分類」を先頭に固定表示 #}
+      {% if "未分類" in category_counts %}
+      <tr>
+        <td class="category-col-name">未分類</td>
+        <td class="category-col-count">{{ category_counts["未分類"] }}</td>
+        <td class="category-col-rename" colspan="2">
+          こちらは固定カテゴリのため、変更・削除はできません。
+        </td>
+      </tr>
+      {% endif %}
+
+      {# それ以外のカテゴリを順番に表示 #}
       {% for category_name, count in category_counts.items() %}
+        {% if category_name != "未分類" %}
         <tr>
-          <td>{{ category_name }}</td>
-          <td>{{ count }}</td>
-          <td>
+          <td class="category-col-name">{{ category_name }}</td>
+          <td class="category-col-count">{{ count }}</td>
+          <td class="category-col-rename">
             <form action="/categories" method="POST" class="rename-form">
               <input type="hidden" name="action" value="rename">
               <input type="hidden" name="old_name" value="{{ category_name }}">
-              <input type="text" name="new_name" class="form-input" placeholder="新しい名前">
+              <input type="text" name="new_name" class="rename-input" placeholder="新しい名前">
               <button class="button">変更</button>
             </form>
           </td>
-          <td>
+          <td class="category-col-delete">
             <form action="/categories" method="POST">
               <input type="hidden" name="action" value="delete">
               <input type="hidden" name="target_name" value="{{ category_name }}">
-              <button class="button button-danger" onclick="return confirm('「{{ category_name }}」を削除します。よろしいですか？')">削除</button>
+              <button
+                class="button button-danger"
+                onclick="return confirm('「{{ category_name }}」を削除します。よろしいですか？')"
+              >
+                削除
+              </button>
             </form>
           </td>
         </tr>
+        {% endif %}
       {% endfor %}
     </tbody>
   </table>
-  
 {% endblock %}

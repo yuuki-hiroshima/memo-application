@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, flash
+from flask import Flask, request, render_template, redirect, flash, session
 from memo_core import create_memo, list_memos, update_memo, delete_memo, move_memos, rename_category, delete_category
 from json_io import MEMOS_PATH, CATEGORIES_PATH, load_memos, load_categories, save_categories
 import datetime
@@ -16,13 +16,15 @@ def build_sidebar_context():
         categories = ["未分類"]
 
     all_memos = load_memos(MEMOS_PATH)
+
+    public_memos = [m for m in all_memos if not m.get("is_private")]
     
     category_counts = {cat: 0 for cat in categories}
 
     if "未分類" not in category_counts:
         category_counts["未分類"] = 0
 
-    for m in all_memos:
+    for m in public_memos:
         cat = m.get("category", "").strip()
         if not cat:
             cat = "未分類"
@@ -31,18 +33,44 @@ def build_sidebar_context():
             category_counts[cat] = 0
         category_counts[cat] += 1
 
-    category_options = list(category_counts.keys())
+    sorted_items = sorted(
+        category_counts.items(),
+        key=lambda item: (item[0] != "未分類", item[0])
+    )
+    category_counts_sorted = dict(sorted_items)
+    category_options = list(category_counts_sorted.keys())
 
-    total_count = len(all_memos)   
+    total_public_count = len(public_memos)  
+
+    private_count = sum(1 for m in all_memos if m.get("is_private"))
+
+    # サイドバーの表示順を決める。
+    # 未分類 → 未分類以外 → メモにだけ存在するカテゴリ（念のため）
+    sidebar_categories = [] 
+
+    if "未分類" in category_counts:
+        sidebar_categories.append("未分類")
+
+    for cat in categories:
+        if cat != "未分類" and cat in category_counts:
+            sidebar_categories.append(cat)
+
+    for cat in category_counts.keys():
+        if cat not in sidebar_categories:
+            sidebar_categories.append(cat)
+
 
     return {
-        "total_count": total_count,
-        "category_counts": category_counts,
+        "total_count": total_public_count,
+        "category_counts": category_counts_sorted,
         "category_options": category_options,
+        "private_count": private_count,
+        "sidebar_categories": sidebar_categories,
     }
 
 
 # add
+@app.route("/", methods=["GET"])
 @app.route("/memos/new", methods=["GET", "POST"])
 def new_memo():
     if request.method == "GET":
@@ -75,44 +103,61 @@ def new_memo():
         if not new_memo:
             return render_template("new.html", error_message="登録する情報を入力してください。")
         else:
+            flash("1件のメモを登録しました。")
             return redirect("/memos")
         
     return render_template("new.html")
 
 # list
-@app.route("/", methods=["GET"]) # トップページはあとから新規作成に移動
 @app.route("/memos", methods=["GET"])
 def show_memo_list():
     category = request.args.get("category")
     sort = None
 
-    memos = list_memos(MEMOS_PATH, category, sort)
+    all_memos = load_memos(MEMOS_PATH)
+    public_memos = [m for m in all_memos if not m.get("is_private")]
 
-    display_memos = []
-    for memo in memos:
-        memo = memo.copy()
+    if category is None:
+        target_memos = public_memos
 
-        created_at = time_display_organaize(memo["created_at"])
+    elif category == "未分類":
+        target_memos = [
+            m for m in public_memos
+            if not (m.get("category") or "").strip()
+        ]
+    
+    else:
+        target_memos = [
+            m for m in public_memos
+            if (m.get("category") or "").strip() == category
+        ]
+
+    memos_for_view = []
+
+    for memo in target_memos:
+        m = memo.copy()
+
+        created_at = time_display_organaize(m.get("created_at"))
         if not created_at:
             created_at = "(記録なし)"
-        memo["created_at"] = created_at
-        updated_at = time_display_organaize(memo["updated_at"])
+        m["created_at"] = created_at
+        updated_at = time_display_organaize(m.get("updated_at"))
         if not updated_at:
             updated_at = "(記録なし)"
-        memo["updated_at"] = updated_at
+        m["updated_at"] = updated_at
 
         # 古いデータ対応用（空白を排除）。問題がなくなったら削除してもOK
-        if not memo["category"]:
-            memo["category"] = "未分類"
+        if not (m.get("category") or "").strip():
+            m["category"] = "未分類"
 
-        display_memos.append(memo)
+        memos_for_view.append(m)
 
     # サイドバーのカテゴリ表示用
     sidebar_ctx = build_sidebar_context()
 
     return render_template(
         "list.html",
-        memos=display_memos,
+        memos=memos_for_view,
         selected_category=category,
         **sidebar_ctx,
     )
@@ -166,12 +211,16 @@ def edit_memo(memo_id):
         title = memo["title"]
         body = memo["body"]
         category = memo["category"]
-        # is_private = request.form.get("is_private") あとから対応予定
+        raw = request.form.get("is_private")
+        if raw is None:
+            is_private = False
+        else:
+            is_private = True
 
         if not body:
             return render_template("edit.html", memo=memo_data, memo_id=memo_id, error_message="本文は必須です。")
 
-        up_memo = update_memo(MEMOS_PATH, memo_id, title, body, category)
+        up_memo = update_memo(MEMOS_PATH, memo_id, title, body, category, is_private)
 
         if up_memo is None:
             return render_template("edit.html", memo=memo_data, memo_id=memo_id, error_message="更新する情報がありませんでした。")
@@ -291,9 +340,7 @@ def show_categories():
         return render_template(
             "categories.html",
             selected_category=None,
-            category_counts=sidebar_ctx["category_counts"],
-            total_count=sidebar_ctx["total_count"],
-            category_options=sidebar_ctx["category_options"],
+            **sidebar_ctx,
         )
     
     action = request.form.get("action")
@@ -386,6 +433,49 @@ def show_categories():
     else:
         flash("不正な操作が指定されました。")
         return redirect("/categories")
+    
+
+PRIVATE_PASSWORD = "test"
+# プライベートフォルダ
+@app.route("/private", methods=["GET", "POST"])
+def private_memos():
+    if request.method == "POST":
+        password = request.form.get("password", "")
+        if password == PRIVATE_PASSWORD:
+            session["private_unlocked"] = True
+        else:
+            flash("パスワードが違います。")
+            sidebar_ctx = build_sidebar_context()
+            return render_template("private.html", memos=None, **sidebar_ctx)
+    
+    if not session.get("private_unlocked"):
+        sidebar_ctx = build_sidebar_context()
+        return render_template("private.html", memos=None, **sidebar_ctx)
+
+    all_memos = load_memos(MEMOS_PATH)
+    private_memo_list = [m for m in all_memos if m.get("is_private")]
+
+    if not private_memo_list:
+        flash("プライベートフォルダは0件です。")
+        return redirect("/memos")
+    else:
+        display_memos = []
+        for memo in private_memo_list:
+            m = memo.copy()
+            created_at = time_display_organaize(m["created_at"])
+            if not created_at:
+                created_at = "(記録なし)"
+            m["created_at"] = created_at
+
+            updated_at = time_display_organaize(m["updated_at"])
+            if not updated_at:
+                updated_at = "(記録なし)"
+            m["updated_at"] = updated_at
+
+            display_memos.append(m)
+
+    sidebar_ctx = build_sidebar_context()
+    return render_template("private.html", memos=display_memos, **sidebar_ctx)
         
 # 時間の表示調整用
 def time_display_organaize(arg_time):

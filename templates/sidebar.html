@@ -1,22 +1,27 @@
-{% block sidebar %}
-  <div class="sidebar-search">
-    <input type="text" placeholder="検索ワードを入力してください">
-  </div>
+<div class="sidebar-search">
+  <input type="text" placeholder="検索ワードを入力してください">
+</div>
 
-  <ul class="folder-list">
-    <li class="folder-header">
-      <a href="/memos">
-      すべてのメモ ({{ total_count }})
-      </a>
-    </li>
+<ul class="folder-list">
+  <li class="folder-header">
+    <a href="/memos">
+    すべてのメモ ({{ total_count }})
+    </a>
+  </li>
 
-    {% for category, count in category_counts.items() %}
-    <li>
-      <a href="/memos?category={{ category }}"
-        class="{% if selected_category == category %}is-active{% endif %}">
-        {{ category }} ({{ count }})
-      </a>
-    </li>
-  {% endfor %}
-  </ul>
-{% endblock %}
+  {% for category in sidebar_categories %}
+  <li>
+    <a href="/memos?category={{ category }}"
+      class="{% if selected_category == category %}is-active{% endif %}">
+      {{ category }} ({{ category_counts[category] }})
+    </a>
+  </li>
+{% endfor %}
+</ul>
+
+<div class="sidebar-footer">
+  <a href="/private" class="button button-secondary">🔐プライベート ({{ private_count }})</a>
+  <a href="/categories" class="button sidebar-category-button">
+    カテゴリ管理
+  </a>
+</div>

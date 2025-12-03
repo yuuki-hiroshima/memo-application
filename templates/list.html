@@ -44,10 +44,13 @@
         <td>{{ memo["body"][:10] }}</td>
         <td>{{ memo["created_at"] }}</td>
         <td>{{ memo["updated_at"] }}</td>
-        <td>
-          <a href="/memos/{{ memo.id }}/edit">編集</a>
-          <br>
-          <a href="/memos/{{ memo.id }}/delete">削除</a>
+        <td class="table-actions">
+          <a href="/memos/{{ memo.id }}/edit" class="button button-sm">
+            編集
+          </a>
+          <a href="/memos/{{ memo.id }}/delete" class="button button-sm button-danger">
+            削除
+          </a>
         </td>
       </tr>
       {% endfor %}

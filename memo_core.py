@@ -73,7 +73,7 @@ def list_memos(filepath, category, sort):
         return target
 
 
-def update_memo(filepath, id, title, body, category):
+def update_memo(filepath, id, title, body, category, is_private):
     try:
         memos = load_memos(filepath)
         for memo in memos:
@@ -93,6 +93,9 @@ def update_memo(filepath, id, title, body, category):
                 if not category:
                     category = "未分類"
                 target_memo["category"] = category
+
+            if is_private is not None:
+                target_memo["is_private"] = is_private
 
             now = datetime.now().isoformat()
             target_memo["updated_at"] = now
