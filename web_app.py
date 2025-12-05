@@ -1,11 +1,10 @@
 from flask import Flask, request, render_template, redirect, flash, session
 from memo_core import create_memo, list_memos, update_memo, delete_memo, move_memos, rename_category, delete_category
-from json_io import MEMOS_PATH, CATEGORIES_PATH, load_memos, load_categories, save_categories
+from json_io import MEMOS_PATH, CATEGORIES_PATH, SETTINGS_PATH, load_memos, load_categories, save_categories, load_settings, save_settings
 import datetime
 
 app = Flask(__name__)
 app.secret_key = "my_secret_key"
-
 
 # sidebar
 def build_sidebar_context():
@@ -68,6 +67,26 @@ def build_sidebar_context():
         "sidebar_categories": sidebar_categories,
     }
 
+# load_private_password
+DEFAULT_PRIVATE_PASSWORD = "0000"
+def get_private_password():
+    """settings.json から現在のプライベートパスワードを取得。なければ初期値で作る。""" 
+    settings = load_settings(SETTINGS_PATH)
+    pw = settings.get("private_password")
+
+    if not pw:
+        pw = DEFAULT_PRIVATE_PASSWORD
+        settings["private_password"] = pw
+        save_settings(SETTINGS_PATH, settings)
+
+    return pw
+
+# save_private_password
+def set_private_password(new_password: str):
+    """新しいパスワードを settings.json に保存する。"""
+    settings = load_settings(SETTINGS_PATH)
+    settings["private_password"] = new_password
+    save_settings(SETTINGS_PATH, settings)
 
 # add
 @app.route("/", methods=["GET"])
@@ -123,7 +142,7 @@ def show_memo_list():
     elif category == "未分類":
         target_memos = [
             m for m in public_memos
-            if not (m.get("category") or "").strip()
+            if (m.get("category") or "").strip() in ("", "未分類")
         ]
     
     else:
@@ -435,13 +454,42 @@ def show_categories():
         return redirect("/categories")
     
 
-PRIVATE_PASSWORD = "test"
+# パスワード変更画面（プライベートフォルダ用）
+@app.route("/password", methods=["GET", "POST"])
+def manege_password():
+    sidebar_ctx = build_sidebar_context()
+
+    if request.method == "GET":
+        return render_template("password.html", **sidebar_ctx)
+    
+    current = (request.form.get("current_password") or "").strip()
+    new1 = (request.form.get("new_password") or "").strip()
+    new2 = (request.form.get("new_password_confirm") or "").strip()
+
+    if current != get_private_password():
+        flash("現在のパスワードが違います。")
+        return redirect("/password")
+
+    if not new1:
+        flash("新しいパスワードを入力してください。")
+        return redirect("/password")
+
+    if new1 != new2:
+        flash("新しいパスワード（確認）が一致しません。")
+        return redirect("/password")
+    
+    set_private_password(new1)
+    session["private_unlocked"] = False
+
+    flash("パスワードを変更しました。再度プライベートを開くには、新しいパスワードを入力してください。")
+    return redirect("/private")
+
 # プライベートフォルダ
 @app.route("/private", methods=["GET", "POST"])
 def private_memos():
     if request.method == "POST":
         password = request.form.get("password", "")
-        if password == PRIVATE_PASSWORD:
+        if password == get_private_password():
             session["private_unlocked"] = True
         else:
             flash("パスワードが違います。")

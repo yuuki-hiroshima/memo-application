@@ -18,9 +18,9 @@
 
   {# ロック中：パスワード入力フォームだけ表示 #}
   {% if not memos %}
-    <form method="POST" action="/private">
-      <input type="password" name="password" placeholder="パスワードを入力">
-      <button type="submit" class="button">開く</button>
+    <form method="POST" action="/private" class="private-password-form">
+      <input type="password" name="password" placeholder="パスワードを入力" class="private-password-input">
+      <button type="submit" class="button button-primary">開く</button>
     </form>
 
   {# ロック解除後：プライベートメモ一覧を表示 #}

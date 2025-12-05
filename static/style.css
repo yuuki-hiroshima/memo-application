@@ -17,7 +17,9 @@ body {
   background: #f7f7f7;
   padding: 24px;
   box-sizing: border-box;
-  border-right: 1px solid #e0e0e0; 
+  border-right: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
 }
 
 /* サイドバー内の検索ボックス */
@@ -43,6 +45,8 @@ body {
   padding: 0;
   margin: 16px 0 0;
   font-size: 14px;
+  flex: 1;
+  overflow-y: auto;
 }
 
 /* すべてのメモ部分 */
@@ -427,13 +431,6 @@ table td {
   text-align: center;
 }
 
-/* サイドバー下部のフッター */
-.sidebar-footer {
-  margin-top: 24px;
-  padding: 16px;
-  border-top: 1px solid #e0e0e0;
-}
-
 /* サイドバー用のカテゴリ管理ボタン */
 .sidebar-category-button {
   width: 100%;
@@ -444,10 +441,15 @@ table td {
 
 /* サイドバー下部のボタンエリア */
 .sidebar-footer {
-  margin-top: 32px;        /* フォルダリストとの間に十分な余白 */
+  margin-top: 16px;        /* フォルダリストとの間に十分な余白 */
   display: flex;
   flex-direction: column;  /* 上下に並べる */
   gap: 8px;                /* ボタン同士の間隔 */
+}
+
+.sidebar-footer-button {
+  width: 100%;
+  text-align: center;
 }
 
 /* 下部ボタンは横幅いっぱい & 中央寄せ */
@@ -474,4 +476,20 @@ table td {
 }
 .sidebar-category-button:hover {
   background-color: #f5f5f5;
+}
+
+/* プライベート パスワード入力欄 */
+.private-password-input {
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.private-password-form {
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
