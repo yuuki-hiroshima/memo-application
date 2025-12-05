@@ -156,14 +156,18 @@ def show_memo_list():
     for memo in target_memos:
         m = memo.copy()
 
-        created_at = time_display_organaize(m.get("created_at"))
-        if not created_at:
-            created_at = "(記録なし)"
-        m["created_at"] = created_at
-        updated_at = time_display_organaize(m.get("updated_at"))
-        if not updated_at:
-            updated_at = "(記録なし)"
-        m["updated_at"] = updated_at
+        created_at_parts = time_display_organaize(m.get("created_at"))
+        if not created_at_parts:
+            created_at_parts = "(記録なし)"
+        m["created_year"] = created_at_parts["year"]
+        m["created_date"] = created_at_parts["date"]
+        m["created_time"] = created_at_parts["time"]
+        updated_at_parts = time_display_organaize(m.get("updated_at"))
+        if not updated_at_parts:
+            updated_at_parts = "(記録なし)"
+        m["updated_year"] = updated_at_parts["year"]
+        m["updated_date"] = updated_at_parts["date"]
+        m["updated_time"] = updated_at_parts["time"]
 
         # 古いデータ対応用（空白を排除）。問題がなくなったら削除してもOK
         if not (m.get("category") or "").strip():
@@ -268,10 +272,10 @@ def del_memo(memo_id):
             flash("該当のメモはありませんでした。")
             return redirect("/memos")
         else:
-            created_at =  time_display_organaize(target_memo["created_at"])
+            created_at =  format_datetime_for_delete(target_memo["created_at"])
             if not created_at:
                 created_at = "(記録なし)"
-            updated_at =  time_display_organaize(target_memo["updated_at"])
+            updated_at =  format_datetime_for_delete(target_memo["updated_at"])
             if not updated_at:
                 updated_at = "(記録なし)"
 
@@ -510,15 +514,19 @@ def private_memos():
         display_memos = []
         for memo in private_memo_list:
             m = memo.copy()
-            created_at = time_display_organaize(m["created_at"])
-            if not created_at:
-                created_at = "(記録なし)"
-            m["created_at"] = created_at
+            created_at_parts = time_display_organaize(m["created_at"])
+            if not created_at_parts:
+                created_at_parts = "(記録なし)"
+            m["created_year"]  = created_at_parts["year"]
+            m["created_date"]  = created_at_parts["date"]
+            m["created_time"]  = created_at_parts["time"]
 
-            updated_at = time_display_organaize(m["updated_at"])
-            if not updated_at:
-                updated_at = "(記録なし)"
-            m["updated_at"] = updated_at
+            updated_at_parts = time_display_organaize(m["updated_at"])
+            if not updated_at_parts:
+                updated_at_parts = "(記録なし)"
+            m["updated_year"] = updated_at_parts["year"]
+            m["updated_date"] = updated_at_parts["date"]
+            m["updated_time"] = updated_at_parts["time"]
 
             display_memos.append(m)
 
@@ -528,19 +536,42 @@ def private_memos():
 # 時間の表示調整用
 def time_display_organaize(arg_time):
     if not arg_time:
-        return
+        return {
+            "year": "(記録なし)",
+            "date": "(記録なし)",
+            "time": "(記録なし)",
+        }
     
     format_in = "%Y-%m-%dT%H:%M:%S.%f"
     try:
-        dt_object = datetime.datetime.strptime(arg_time, format_in)
+        dt = datetime.datetime.strptime(arg_time, format_in)
     except ValueError:
         format_in_no_micro = "%Y-%m-%dT%H:%M:%S"
-        dt_object = datetime.datetime.strptime(arg_time[:19], format_in_no_micro)
+        dt = datetime.datetime.strptime(arg_time[:19], format_in_no_micro)
 
-    format_out = "%Y年%m月%d日/%H時%M分"
-    format_datetime = dt_object.strftime(format_out)
+    year_str = f"{dt.year}年"
+    date_str = f"{dt.month}月{dt.day}日"
+    time_str = f"{dt.hour}時{dt.minute}分"
 
-    return format_datetime
+    return {
+        "year": year_str,
+        "date": date_str,
+        "time": time_str,
+    }
+
+def format_datetime_for_delete(arg_time):
+    """削除画面用：1行の日時表示を返す（例：2025年 11月17日 14時53分）"""
+    if not arg_time:
+        return "(記録なし)"
+
+    format_in = "%Y-%m-%dT%H:%M:%S.%f"
+    try:
+        dt = datetime.datetime.strptime(arg_time, format_in)
+    except ValueError:
+        format_in_no_micro = "%Y-%m-%dT%H:%M:%S"
+        dt = datetime.datetime.strptime(arg_time[:19], format_in_no_micro)
+
+    return f"{dt.year}年 {dt.month}月{dt.day}日 {dt.hour}時{dt.minute}分"
 
 if __name__ == "__main__":
     app.run(debug=True, port=8000)

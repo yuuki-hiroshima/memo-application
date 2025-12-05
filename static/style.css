@@ -13,7 +13,7 @@ body {
 
 /* サイドバー */
 .sidebar {
-  width: 260px;
+  width: 200px;
   background: #f7f7f7;
   padding: 24px;
   box-sizing: border-box;
@@ -24,7 +24,7 @@ body {
 
 /* サイドバー内の検索ボックス */
 .sidebar-search {
-  margin-bottom: 24px;
+  margin-top: 40px;
 }
 
 /* サイドバー内の検索ボックス */
@@ -492,4 +492,125 @@ table td {
   display: flex;
   gap: 8px;
   align-items: center;
+}
+
+/* メモ一覧テーブルのスクロール領域 */
+.memo-table-wrapper {
+  max-height: 720px;   /* ここで高さを調整 */
+  overflow-y: auto;
+  margin-top: 16px;
+}
+
+/* ラッパーの中のテーブルは幅100%で表示 */
+.memo-table-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* ページ上部のヘッダ（タイトル＋右側ボタン） */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;          /* タイトルとボタンの間の余白 */
+  margin-bottom: 16px;
+}
+
+.page-header h1 {
+  margin: 0;          /* 余計な上/下マージンを消して高さを詰める */
+}
+
+/* 複数ボタンを横並びにするためのラッパー */
+.page-header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* カテゴリ管理：新規カテゴリ作成フォームを横並びに */
+.create-category-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;            /* 入力欄とボタンのすき間 */
+  margin-bottom: 16px;
+}
+
+/* カテゴリ管理画面 新規カテゴリフォームを横並びに変更（始まり） */
+.category-create-row {
+  margin-bottom: 16px;
+}
+
+.create-category-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.create-category-label {
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+.create-category-input {
+  width: 200px;
+  max-width: 100%;
+}
+
+/* カテゴリ管理画面 新規カテゴリフォームを横並びに変更（終わり） */
+
+/* メモ一覧テーブル レイアウト調整（始まり） */
+
+.memo-table-wrapper {
+  max-height: 720px;
+  overflow-y: auto;
+  overflow-x: auto;   /* ← 横スクロールを有効化 */
+  margin-top: 16px;
+  width: 100%;
+}
+
+.memo-table-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: flex;
+}
+
+.memo-table-wrapper th.col-select,
+.memo-table-wrapper td.col-select {
+  width: 30px;
+}
+
+.memo-table-wrapper th.col-title,
+.memo-table-wrapper td.col-title {
+  width: 50%;
+}
+
+.memo-table-wrapper th.col-body,
+.memo-table-wrapper td.col-body {
+  width: 80%;       
+}
+
+.memo-table-wrapper th.col-date,
+.memo-table-wrapper td.col-date {
+  width: 60px;  
+  white-space: nowrap;  
+}
+
+.memo-table-wrapper th.col-actions,
+.memo-table-wrapper td.col-actions {
+  white-space: nowrap;
+  min-width: 40px;
+  text-align: center;
+}
+
+.memo-table-wrapper td {
+  vertical-align: top;
+}
+
+/* メモ一覧テーブル レイアウト調整（終わり） */
+
+/* パスワード管理の入力欄*/
+.password-input {
+  width: 250px;
+  max-width: 100%;
+  padding: 6px 10px;
+  font-size: 14px;
 }

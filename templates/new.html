@@ -2,13 +2,13 @@
 {% block title %}新規作成{% endblock %}
 
 {% block content %}
-  <h1>新規作成</h1>
+<div class="page-header">
+  <h1>新規メモ作成</h1>
 
-  <p>
-    <a href="/memos" class="button">
-      一覧へ戻る
-    </a>
-  </p>
+  <div class="page-header-actions">
+    <a href="/memos" class="button">一覧へ戻る</a>
+  </div>
+</div>
 
   {% if error_message %}
     <p class="flash-messages">
@@ -29,7 +29,7 @@
         <textarea
           name="body" 
           id="body" 
-          rows="6"
+          rows="20"
           class="form-textarea" 
           placeholder="本文を入力してください"></textarea>
       </div>

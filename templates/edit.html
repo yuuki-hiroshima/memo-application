@@ -2,13 +2,16 @@
 {% block title %}編集{% endblock %}
 
 {% block content %}
-  <h1>編集</h1>
+<div class="page-header">
+  <h1>メモ編集</h1>
 
-  <p>
-    <a href="/memos" class="button">
-      一覧へ戻る
-    </a>
-  </p>
+  <div class="page-header-actions">
+    <form action="/memos/new" method="GET">
+      <button type="submit" class="button button-primary">新規作成</button>
+    </form>
+    <a href="/memos" class="button">一覧へ戻る</a>
+  </div>
+</div>
 
   {% if error_message %}
     <p class="flash-messages">
@@ -36,7 +39,7 @@
         <textarea 
           name="body" 
           id="body" 
-          rows="6"
+          rows="20"
           class="form-textarea" 
           placeholder="本文を入力してください">{{ memo.body }}</textarea>
       </div>

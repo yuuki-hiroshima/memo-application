@@ -2,7 +2,15 @@
 {% block title %}メモ一覧{% endblock %}
 
 {% block content %}
-<h1>メモ一覧</h1>
+<div class="page-header">
+  <h1>メモ一覧</h1>
+
+  <div class="page-header-actions">
+    <form action="/memos/new" method="GET">
+      <button type="submit" class="button button-primary">新規作成</button>
+    </form>
+  </div>
+</div>
 
 {% with messages = get_flashed_messages() %}
   {% if messages %}
@@ -18,44 +26,56 @@
   {% endif %}
 {% endwith %}
 
-<form action="/memos/new" method="GET">
-  <button type="submit" class="button button-primary">新規作成</button>
-</form>
-
 <form action="/memos/bulk" method="POST">
-  <table>
-    <thead>
-      <tr>
-        <th>選択</th>
-        <th>ID</th>
-        <th>タイトル</th>
-        <th>本文</th>
-        <th>作成日</th>
-        <th>更新日</th>
-        <th>操作</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for memo in memos %}
-      <tr>
-        <td><input type="checkbox" name="selected_ids" value="{{ memo.id }}"></td>
-        <td>{{ memo["id"] }}</td>
-        <td><a href="/memos/{{ memo.id }}/edit">{{ memo["title"] }}</a></td>
-        <td>{{ memo["body"][:10] }}</td>
-        <td>{{ memo["created_at"] }}</td>
-        <td>{{ memo["updated_at"] }}</td>
-        <td class="table-actions">
-          <a href="/memos/{{ memo.id }}/edit" class="button button-sm">
-            編集
-          </a>
-          <a href="/memos/{{ memo.id }}/delete" class="button button-sm button-danger">
-            削除
-          </a>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+
+  <div class="memo-table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th class="col-select">選択</th>
+          <th class="col-title">タイトル</th>
+          <th class="col-body">本文</th>
+          <th class="col-date">作成日</th>
+          <th class="col-date">更新日</th>
+          <th class="col-actions">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for memo in memos %}
+        <tr>
+          <td class="col-select">
+            <input type="checkbox" name="selected_ids" value="{{ memo.id }}">
+          </td>
+          <td class="col-title">
+            <a href="/memos/{{ memo.id }}/edit">{{ memo["title"] }}</a>
+          </td>
+          <td class="col-body">
+            {{ memo["body"][:24] }}
+          </td>
+          <td class="col-date">
+            {{ memo.created_year }}<br>
+            {{ memo.created_date }}<br>
+            {{ memo.created_time }}
+          </td>
+          <td class="col-date">
+            {{ memo.updated_year }}<br>
+            {{ memo.updated_date }}<br>
+            {{ memo.updated_time }}
+          </td>
+          <td class="col-actions table-actions">
+            <a href="/memos/{{ memo.id }}/edit" class="button button-sm">
+              編集
+            </a>
+            <br>
+            <a href="/memos/{{ memo.id }}/delete" class="button button-sm button-danger">
+              削除
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
   <div class="form-actions">
     <select name="move_category" class="form_input">
@@ -66,7 +86,6 @@
     </select>
     <button type="submit" name="action" value="move" class="button">選択したメモを移動</button>
     <button type="submit" name="action" value="delete" class="button button-danger" onclick="return confirm('選択したメモを削除します。よろしいですか？')">選択したメモを削除</button>
-
   </div>
 </form>
 {% endblock %}

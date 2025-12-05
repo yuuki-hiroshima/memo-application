@@ -2,7 +2,13 @@
 {% block title %}カテゴリ管理{% endblock %}
 
 {% block content %}
+<div class="page-header">
   <h1>カテゴリ管理</h1>
+
+  <div class="page-header-actions">
+    <a href="/memos" class="button">一覧へ戻る</a>
+  </div>
+</div>
 
   {% with messages = get_flashed_messages() %}
     {% if messages %}
@@ -18,12 +24,24 @@
     {% endif %}
   {% endwith %}
 
-  <h2>新規カテゴリの作成</h2>
-  <form action="/categories" method="POST" class="create-category-form">
-    <input type="hidden" name="action" value="create">
-    <input type="text" name="new_category" placeholder="カテゴリ名を入力" class="form-input" required>
-    <button class="button button-primary">作成</button>
-  </form>
+  <div class="category-create-row">
+    <form action="/categories" method="POST" class="create-category-form">
+      <input type="hidden" name="action" value="create">
+
+      <label for="new_category" class="create-category-label">
+        カテゴリ作成：
+      </label>
+
+      <input id="new_category"
+            name="new_category"
+            type="text"
+            placeholder="カテゴリ名を入力"
+            class="form-input create-category-input"
+            required>
+
+      <button class="button button-primary">作成</button>
+    </form>
+  </div>
 
   <table class="category-table">
     <thead>
