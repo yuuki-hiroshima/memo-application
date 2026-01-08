@@ -1,0 +1,12 @@
+# Pythonキャッシュ
+__pycache__/
+*.py[cod]
+
+# OS生成ファイル
+.DS_Store
+
+# 環境変数（APIキーなどを書く予定があれば必須）
+.env
+
+# データベース（SQLiteなどを使っている場合）
+*.sqlite3
